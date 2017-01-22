@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_hint">Ім'я користувача</string>
+    <string name="password_hint">Пароль</string>
+    <string name="text_button_login">Увійти</string>
+</resources>

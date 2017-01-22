@@ -1,4 +1,4 @@
-package com.example.sveta.taxodriver;
+package com.example.sveta.taxodriver.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.sveta.taxodriver.data.Order;
+import com.example.sveta.taxodriver.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;

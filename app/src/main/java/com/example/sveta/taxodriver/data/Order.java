@@ -1,4 +1,4 @@
-package com.example.sveta.taxodriver;
+package com.example.sveta.taxodriver.data;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
