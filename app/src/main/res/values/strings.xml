@@ -5,5 +5,8 @@
     <string name="text_button_login">Login</string>
     <string name="all_orders_text">Available orders</string>
     <string name="my_orders_text">My orders</string>
+    <string name="text_orders_list_drawer">List of orders</string>
+    <string name="text_info_about_user">About user</string>
+    <string name="text_about_program">About</string>
 
 </resources>

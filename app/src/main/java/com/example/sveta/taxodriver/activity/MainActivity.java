@@ -1,25 +1,20 @@
 package com.example.sveta.taxodriver.activity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.example.sveta.taxodriver.data.Order;
 import com.example.sveta.taxodriver.R;
+import com.example.sveta.taxodriver.fragment.AboutProgramFragment;
 import com.example.sveta.taxodriver.fragment.OrdersListFragment;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.sveta.taxodriver.fragment.UserInfoFragment;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 
 public class MainActivity extends AppCompatActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,5 +23,39 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().add(R.id.main_fragments_container, new OrdersListFragment()).commit();
         }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        final Drawer drawer = new DrawerBuilder()
+                .withActivity(this)
+                .withDrawerWidthDp(240)
+                .withToolbar(toolbar)
+                .withHeader(R.layout.drawer_header)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName(R.string.text_orders_list_drawer),
+                        new PrimaryDrawerItem().withName(R.string.text_info_about_user),
+                        new PrimaryDrawerItem().withName(R.string.text_about_program)
+                ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        //Replace fragments
+                        switch (position){
+                            case 1:
+                                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragments_container,new OrdersListFragment()).commit();
+                                return false;
+                            case 2:
+                                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragments_container,new UserInfoFragment()).commit();
+                                return false;
+                            case 3:
+                                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragments_container,new AboutProgramFragment()).commit();
+                                return false;
+                            default:
+                                return true;
+                        }
+                    }
+                }).build();
+
     }
 }

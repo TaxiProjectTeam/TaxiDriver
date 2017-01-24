@@ -5,4 +5,7 @@
     <string name="text_button_login">Войти</string>
     <string name="all_orders_text">Доступные заказы</string>
     <string name="my_orders_text">Мои заказы</string>
+    <string name="text_orders_list_drawer">Список заказов</string>
+    <string name="text_info_about_user">Информация о пользователе</string>
+    <string name="text_about_program">О програме</string>
 </resources>
