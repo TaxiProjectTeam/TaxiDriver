@@ -3,4 +3,6 @@
     <string name="login_hint">Имя пользователя</string>
     <string name="password_hint">Пароль</string>
     <string name="text_button_login">Войти</string>
+    <string name="all_orders_text">Доступные заказы</string>
+    <string name="my_orders_text">Мои заказы</string>
 </resources>

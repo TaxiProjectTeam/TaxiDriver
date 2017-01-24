@@ -3,4 +3,7 @@
     <string name="login_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="text_button_login">Login</string>
+    <string name="all_orders_text">Available orders</string>
+    <string name="my_orders_text">My orders</string>
+
 </resources>
