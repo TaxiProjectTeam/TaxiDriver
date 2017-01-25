@@ -9,13 +9,12 @@
         android:supportsRtl="true"
         android:theme="@style/MyThemeWithoutActionBar">
         <activity android:name=".activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity" android:theme="@style/MyThemeWithoutActionBar"/>
+        <activity android:name=".activity.LoginActivity" android:theme="@style/MyThemeWithoutActionBar">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
     </application>
 
 </manifest>

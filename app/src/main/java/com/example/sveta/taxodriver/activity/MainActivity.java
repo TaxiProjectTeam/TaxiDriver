@@ -1,13 +1,18 @@
 package com.example.sveta.taxodriver.activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.sveta.taxodriver.R;
 import com.example.sveta.taxodriver.fragment.AboutProgramFragment;
 import com.example.sveta.taxodriver.fragment.OrdersListFragment;
 import com.example.sveta.taxodriver.fragment.UserInfoFragment;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -15,6 +20,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,5 +63,29 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).build();
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.logout_menu_item:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+        }
+        return false;
     }
 }

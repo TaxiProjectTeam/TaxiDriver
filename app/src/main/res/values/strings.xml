@@ -8,5 +8,8 @@
     <string name="text_orders_list_drawer">List of orders</string>
     <string name="text_info_about_user">About user</string>
     <string name="text_about_program">About</string>
+    <string name="login_email_password_empty">Enter email and password</string>
+    <string name="login_failed_text">Login failed</string>
+    <string name="logout_text">Log out</string>
 
 </resources>

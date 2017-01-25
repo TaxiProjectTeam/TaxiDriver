@@ -8,4 +8,7 @@
     <string name="text_orders_list_drawer">Список замовлень</string>
     <string name="text_info_about_user">Інформація про користувача</string>
     <string name="text_about_program">Про програму</string>
+    <string name="login_email_password_empty">Введіть пошту та пароль</string>
+    <string name="login_failed_text">Аунтитефікація невдала</string>
+    <string name="logout_text">Вийти</string>
 </resources>
