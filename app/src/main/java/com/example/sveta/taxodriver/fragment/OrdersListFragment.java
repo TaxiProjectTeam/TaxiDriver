@@ -1,7 +1,6 @@
 package com.example.sveta.taxodriver.fragment;
 
-import android.content.Context;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,15 +11,14 @@ import android.view.ViewGroup;
 
 import com.example.sveta.taxodriver.R;
 import com.example.sveta.taxodriver.adapter.TabPagerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.DatabaseReference;
+
 
 public class OrdersListFragment extends Fragment implements TabLayout.OnTabSelectedListener {
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
     public static final String ORDERS_CHILD = "orders";
     public static final String TAG = "Taxo";
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
