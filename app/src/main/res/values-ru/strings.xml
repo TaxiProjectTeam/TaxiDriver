@@ -11,4 +11,6 @@
     <string name="login_email_password_empty">Введите почту и пароль</string>
     <string name="login_failed_text">Аунтетификация неуспешна</string>
     <string name="logout_text">Выйти</string>
+    <string name="text_driver_info">Информация водителя</string>
+    <string name="text_label_car_information">Инормация о автомобиле:</string>
 </resources>

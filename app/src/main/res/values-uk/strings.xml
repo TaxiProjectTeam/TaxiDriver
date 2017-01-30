@@ -11,4 +11,6 @@
     <string name="login_email_password_empty">Введіть пошту та пароль</string>
     <string name="login_failed_text">Аунтитефікація невдала</string>
     <string name="logout_text">Вийти</string>
+    <string name="text_driver_info">Інформація водія</string>
+    <string name="text_label_car_information">Інформація про автомобіль:</string>
 </resources>

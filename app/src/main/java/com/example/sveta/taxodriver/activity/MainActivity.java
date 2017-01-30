@@ -9,10 +9,18 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.sveta.taxodriver.R;
+import com.example.sveta.taxodriver.data.CurrentDriver;
+import com.example.sveta.taxodriver.data.Driver;
 import com.example.sveta.taxodriver.fragment.AboutProgramFragment;
 import com.example.sveta.taxodriver.fragment.OrdersListFragment;
 import com.example.sveta.taxodriver.fragment.UserInfoFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -41,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 .withHeader(R.layout.drawer_header)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName(R.string.text_orders_list_drawer),
-                        new PrimaryDrawerItem().withName(R.string.text_info_about_user),
+                        new PrimaryDrawerItem().withName(R.string.text_driver_info),
                         new PrimaryDrawerItem().withName(R.string.text_about_program)
                 ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -62,6 +70,27 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }).build();
+
+        final Driver[] currDriver = {new Driver()};
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(firebaseUser != null) {
+            ref.child("drivers").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //get Data about user from server
+                    currDriver[0] = dataSnapshot.getValue(Driver.class);
+                    CurrentDriver.setInstance(currDriver[0]);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
 
     }
     @Override
