@@ -13,5 +13,11 @@
     <string name="logout_text">Log out</string>
     <string name="text_driver_info">Driver information</string>
     <string name="text_label_car_information">Car information:</string>
+    <string name="about_text_label">About program</string>
+    <string name="text_description_program">The program for taxi drivers. Designed to receive orders from customers.</string>
+    <string name="listitem_labels_count_stop">"Number of stops: "</string>
+    <string name="listitem_labels_from">"From: "</string>
+    <string name="listitem_labels_price">"Price: "</string>
+    <string name="listitem_labels_to">"To: "</string>
 
 </resources>

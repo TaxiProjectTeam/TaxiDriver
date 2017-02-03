@@ -13,4 +13,10 @@
     <string name="logout_text">Выйти</string>
     <string name="text_driver_info">Информация водителя</string>
     <string name="text_label_car_information">Инормация о автомобиле:</string>
+    <string name="about_text_label">О програме</string>
+    <string name="text_description_program">Программа для водителей-таксистов. Предназначена для получения заказов от клиентов.</string>
+    <string name="listitem_labels_count_stop">"Количество промежуточных остановок: "</string>
+    <string name="listitem_labels_from">"Откуда: "</string>
+    <string name="listitem_labels_price">"Стоимость: "</string>
+    <string name="listitem_labels_to">"Куда: "</string>
 </resources>
