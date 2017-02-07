@@ -1,76 +1,87 @@
 package com.example.sveta.taxodriver.data;
 
-import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.ArrayList;
 
 /**
  * Created by Sveta on 04.01.2017.
  */
 
-@IgnoreExtraProperties
 public class Order {
-    private String startingStreet;
-    private String startingHouse;
-    private String startingEntrance;
-    private String destinationStreet;
-    private String destinationHouse;
-    private String id;
+
+    private Coords fromCoords;
+    private Coords driverPos;
+    private ArrayList<Coords> toCoords;
+    private double price;
+    private String driverId;
+    private String status;
+    private int time;
 
     public Order() {
     }
 
-    public Order(String startingStreet, String startingHouse, String startingEntrance, String destinationStreet, String destinationHouse) {
-        this.startingStreet = startingStreet;
-        this.startingHouse = startingHouse;
-        this.startingEntrance = startingEntrance;
-        this.destinationStreet = destinationStreet;
-        this.destinationHouse = destinationHouse;
+    public Order(Coords fromCoords, ArrayList<Coords> toCoords, Coords driverPos, double price, String driverId, int time, String status) {
+        this.fromCoords = fromCoords;
+        this.driverPos = driverPos;
+        this.toCoords = toCoords;
+        this.price = price;
+        this.driverId = driverId;
+        this.time = time;
     }
 
-    public String getStartingStreet() {
-        return startingStreet;
+    public String getStatus() {
+        return status;
     }
 
-    public String getStartingHouse() {
-        return startingHouse;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getStartingEntrance() {
-        return startingEntrance;
+    public Coords getDriverPos() {
+        return driverPos;
     }
 
-    public String getDestinationStreet() {
-        return destinationStreet;
+    public void setDriverPos(Coords driverPos) {
+        this.driverPos = driverPos;
     }
 
-    public String getDestinationHouse() {
-        return destinationHouse;
+    public Coords getFromCoords() {
+        return fromCoords;
     }
 
-    public void setStartingStreet(String startingStreet) {
-        this.startingStreet = startingStreet;
+    public void setFromCoords(Coords fromCoords) {
+        this.fromCoords = fromCoords;
     }
 
-    public void setStartingHouse(String startingHouse) {
-        this.startingHouse = startingHouse;
+    public ArrayList<Coords> getToCoords() {
+        return toCoords;
     }
 
-    public void setStartingEntrance(String startingEntrance) {
-        this.startingEntrance = startingEntrance;
+    public void setToCoords(ArrayList<Coords> toCoords) {
+        this.toCoords = toCoords;
     }
 
-    public void setDestinationStreet(String destinationStreet) {
-        this.destinationStreet = destinationStreet;
+    public double getPrice() {
+        return price;
     }
 
-    public void setDestinationHouse(String destinationHouse) {
-        this.destinationHouse = destinationHouse;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public String getId() {
-        return id;
+    public String getDriverId() {
+        return driverId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setDriverId(String driverId) {
+        this.driverId = driverId;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 }
