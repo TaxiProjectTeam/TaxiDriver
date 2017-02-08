@@ -2,6 +2,7 @@ package com.example.sveta.taxodriver.data;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Sveta on 04.01.2017.
@@ -11,7 +12,7 @@ public class Order {
 
     private Coords fromCoords;
     private Coords driverPos;
-    private ArrayList<Coords> toCoords;
+    private List<Coords> toCoords;
     private double price;
     private String driverId;
     private String status;
@@ -20,7 +21,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Coords fromCoords, ArrayList<Coords> toCoords, Coords driverPos, double price, String driverId, int time, String status) {
+    public Order(Coords fromCoords, List<Coords> toCoords, Coords driverPos, double price, String driverId, int time, String status) {
         this.fromCoords = fromCoords;
         this.driverPos = driverPos;
         this.toCoords = toCoords;
@@ -53,7 +54,7 @@ public class Order {
         this.fromCoords = fromCoords;
     }
 
-    public ArrayList<Coords> getToCoords() {
+    public List<Coords> getToCoords() {
         return toCoords;
     }
 

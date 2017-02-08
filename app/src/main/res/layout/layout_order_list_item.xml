@@ -5,8 +5,15 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="8dp"
     android:layout_marginStart="8dp"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/order_text"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textSize="25sp"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -80,11 +87,5 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
-        android:src="@drawable/list_item_go_image" />
 
 </LinearLayout>

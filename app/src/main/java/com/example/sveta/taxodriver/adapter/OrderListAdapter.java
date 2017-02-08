@@ -39,10 +39,14 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         return holder;
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
     @Override
     public void onBindViewHolder(OrdersViewHolder holder, int position) {
-        holder.stopCountTextView.setText(orders.get(position).getToCoords().size());
+        holder.stopCountTextView.setText(Integer.toString(orders.get(position).getToCoords().size()));
         holder.priceTextView.setText(Double.toString(orders.get(position).getPrice()));
         holder.fromTextView.setText(getCompleteAddressString(orders.get(position).getFromCoords().getLatitude(),
                 orders.get(position).getFromCoords().getLongitude()));
@@ -57,12 +61,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
             List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
             if (addresses != null) {
                 Address returnedAddress = addresses.get(0);
-                StringBuilder strReturnedAddress = new StringBuilder("");
-
-                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-                }
-                strAdd = strReturnedAddress.toString();
+                strAdd = returnedAddress.getThoroughfare() + ", " + returnedAddress.getSubThoroughfare();
             } else {
             }
         } catch (Exception e) {

@@ -22,4 +22,7 @@
     <string name="label_from_points">Список точок призначення:</string>
     <string name="button_text_accept">Прийняти</string>
     <string name="button_text_navigation">Навігація</string>
+    <string name="loading_text">Замовлення завантажуються</string>
+    <string name="wait_loading_text">Будь ласка, зачекайте...</string>
+    <string name="order_text">Замовлення</string>
 </resources>

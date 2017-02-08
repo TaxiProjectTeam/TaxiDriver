@@ -22,4 +22,7 @@
     <string name="label_from_points">Список точек назначения:</string>
     <string name="button_text_accept">Принять</string>
     <string name="button_text_navigation">Навигация</string>
+    <string name="loading_text">Заказы загружаются</string>
+    <string name="wait_loading_text">Пожалуйста, подождите...</string>
+    <string name="order_text">Заказ</string>
 </resources>
