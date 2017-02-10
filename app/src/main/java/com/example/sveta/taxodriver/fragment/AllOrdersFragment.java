@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import com.example.sveta.taxodriver.R;
 import com.example.sveta.taxodriver.adapter.OrderListAdapter;
 import com.example.sveta.taxodriver.data.Order;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,13 +29,14 @@ import java.util.List;
 
 public class AllOrdersFragment extends Fragment implements ValueEventListener {
 
+    ProgressDialog load;
     private RecyclerView orderRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private OrderListAdapter listAdapter;
     private List<Order> currOrders;
     private FirebaseDatabase database;
     private DatabaseReference ref;
-    ProgressDialog load;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +70,10 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener {
     public void onDataChange(DataSnapshot dataSnapshot) {
         currOrders.clear();
         for(DataSnapshot data : dataSnapshot.getChildren()){
-            currOrders.add(data.getValue(Order.class));
+            Order order = data.getValue(Order.class);
+            if (order.getStatus().equals("free")) {
+                currOrders.add(data.getValue(Order.class));
+            }
         }
         listAdapter.notifyDataSetChanged();
         load.dismiss();

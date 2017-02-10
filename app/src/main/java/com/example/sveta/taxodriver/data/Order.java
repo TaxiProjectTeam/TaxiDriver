@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Sveta on 04.01.2017.
  */
 
-public class Order {
+public class Order implements Comparable<Order> {
 
     private Coords fromCoords;
     private Coords driverPos;
@@ -28,6 +28,7 @@ public class Order {
         this.price = price;
         this.driverId = driverId;
         this.time = time;
+
     }
 
     public String getStatus() {
@@ -84,5 +85,11 @@ public class Order {
 
     public void setTime(int time) {
         this.time = time;
+    }
+
+    @Override
+    public int compareTo(Order o) {
+        //TODO: compare two coords (minimal distance)
+        return 0;
     }
 }

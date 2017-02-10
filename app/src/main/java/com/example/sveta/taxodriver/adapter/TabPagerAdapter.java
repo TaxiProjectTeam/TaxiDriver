@@ -1,9 +1,11 @@
 package com.example.sveta.taxodriver.adapter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.sveta.taxodriver.R;
 import com.example.sveta.taxodriver.fragment.AllOrdersFragment;
 import com.example.sveta.taxodriver.fragment.MyOrdersFragment;
 
@@ -14,10 +16,12 @@ import com.example.sveta.taxodriver.fragment.MyOrdersFragment;
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
 
     int tabCount;
+    Context context;
 
-    public TabPagerAdapter(FragmentManager fm, int tabCount) {
+    public TabPagerAdapter(Context context, FragmentManager fm, int tabCount) {
         super(fm);
         this.tabCount = tabCount;
+        this.context = context;
     }
 
     @Override
@@ -29,6 +33,18 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 MyOrdersFragment fragment1 = new MyOrdersFragment();
                 return fragment1;
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0:
+                return context.getResources().getString(R.string.all_orders_text);
+            case 1:
+                return context.getResources().getString(R.string.my_orders_text);
             default:
                 return null;
         }

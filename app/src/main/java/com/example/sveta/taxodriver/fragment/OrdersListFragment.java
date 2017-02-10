@@ -27,17 +27,21 @@ public class OrdersListFragment extends Fragment implements TabLayout.OnTabSelec
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_orders_list, container, false);
-        //Initialize TabLayout and add tabs
+
+        //Initialize
         tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.all_orders_text));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.my_orders_text));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getActivity(), getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
 
         //View pager
         viewPager = (ViewPager) rootView.findViewById(R.id.tab_pager);
-        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
-        tabLayout.setOnTabSelectedListener(this);
+
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(this);
         return rootView;
     }
 
@@ -55,4 +59,5 @@ public class OrdersListFragment extends Fragment implements TabLayout.OnTabSelec
     public void onTabReselected(TabLayout.Tab tab) {
 
     }
+
 }

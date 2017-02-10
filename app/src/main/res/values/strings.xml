@@ -26,5 +26,6 @@
     <string name="loading_text">Orders loaded</string>
     <string name="wait_loading_text">Please wait...</string>
     <string name="order_text">Order</string>
+    <string name="currency_uah">UAH</string>
 
 </resources>

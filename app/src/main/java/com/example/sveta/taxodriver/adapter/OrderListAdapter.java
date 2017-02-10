@@ -47,7 +47,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     @Override
     public void onBindViewHolder(OrdersViewHolder holder, int position) {
         holder.stopCountTextView.setText(Integer.toString(orders.get(position).getToCoords().size()));
-        holder.priceTextView.setText(Double.toString(orders.get(position).getPrice()));
+        holder.priceTextView.setText(Double.toString(orders.get(position).getPrice()) + " " + context.getResources().getString(R.string.currency_uah));
         holder.fromTextView.setText(getCompleteAddressString(orders.get(position).getFromCoords().getLatitude(),
                 orders.get(position).getFromCoords().getLongitude()));
         Coords toCoords = orders.get(position).getToCoords().get(orders.get(position).getToCoords().size() - 1);

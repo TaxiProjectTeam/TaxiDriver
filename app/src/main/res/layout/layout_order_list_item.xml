@@ -7,14 +7,6 @@
     android:layout_marginStart="8dp"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/order_text"
-        android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:textSize="25sp"/>
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -33,29 +25,11 @@
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@id/listitem_from_text_label"
             tools:text="Черкаси, бул. Шевченка, 350" />
-
-        <TextView
-            android:id="@+id/listitem_to_text_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/listitem_from_text_label"
-            android:layout_marginTop="8dp"
-            android:text="@string/listitem_labels_to" />
-
-        <TextView
-            android:id="@+id/listitem_to_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/listitem_from_text_label"
-            android:layout_marginTop="8dp"
-            android:layout_toEndOf="@id/listitem_to_text_label"
-            tools:text="Черкаси, вул. Сумгаїтська, 125" />
-
         <TextView
             android:id="@+id/listitem_count_of_stop_text_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/listitem_to_text_label"
+            android:layout_below="@id/listitem_from_text_label"
             android:layout_marginTop="8dp"
             android:text="@string/listitem_labels_count_stop" />
 
@@ -63,26 +37,38 @@
             android:id="@+id/listitem_stopcount_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/listitem_to_text_label"
+            android:layout_below="@id/listitem_from_text_label"
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@id/listitem_count_of_stop_text_label"
             tools:text="3" />
 
         <TextView
-            android:id="@+id/listitem_price_text_label"
+            android:id="@+id/listitem_to_text_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/listitem_count_of_stop_text_label"
             android:layout_marginTop="8dp"
-            android:text="@string/listitem_labels_price" />
+            android:text="@string/listitem_labels_to" />
+
+        <TextView
+            android:id="@+id/listitem_to_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/listitem_count_of_stop_text_label"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@id/listitem_to_text_label"
+            tools:text="Черкаси, вул. Сумгаїтська, 125" />
+
 
         <TextView
             android:id="@+id/listitem_price_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/listitem_count_of_stop_text_label"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/listitem_to_textview"
             android:layout_marginTop="8dp"
-            android:layout_toEndOf="@id/listitem_price_text_label"
+            android:textSize="20sp"
+            android:textStyle="bold"
             tools:text="300 грн." />
 
     </RelativeLayout>
