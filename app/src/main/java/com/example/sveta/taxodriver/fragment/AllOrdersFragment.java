@@ -99,8 +99,9 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
                 currOrders.add(data.getValue(Order.class));
             }
         }
-        //Sort (minimal distance)
 
+
+        //Sort (minimal distance)
         Collections.sort(currOrders, new Comparator<Order>() {
             @Override
             public int compare(Order o1, Order o2) {

@@ -1,6 +1,7 @@
 package com.example.sveta.taxodriver.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.sveta.taxodriver.R;
+import com.example.sveta.taxodriver.activity.OrderDetailsActivity;
 import com.example.sveta.taxodriver.data.Coords;
 import com.example.sveta.taxodriver.data.Order;
 
@@ -52,6 +54,14 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 orders.get(position).getFromCoords().getLongitude()));
         Coords toCoords = orders.get(position).getToCoords().get(orders.get(position).getToCoords().size() - 1);
         holder.toTextView.setText(getCompleteAddressString(toCoords.getLatitude(), toCoords.getLongitude()));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, OrderDetailsActivity.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
