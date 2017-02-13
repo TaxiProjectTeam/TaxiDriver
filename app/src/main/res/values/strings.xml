@@ -19,7 +19,7 @@
     <string name="listitem_labels_from">"From: "</string>
     <string name="listitem_labels_price">"Price: "</string>
     <string name="listitem_labels_to">"To: "</string>
-    <string name="maps_api_key">AIzaSyAE1CB5HJHe48lXrMORznXq5Mi3qrzKw7g</string>
+    <string name="maps_api_key">AIzaSyBAAYhzmC0BPCO4PQC0sMZu2EeGdkvGYrA</string>
     <string name="label_from_points">List endpoints:</string>
     <string name="button_text_accept">Accept</string>
     <string name="button_text_navigation">navigation</string>
