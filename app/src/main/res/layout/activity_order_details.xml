@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp" />
 
+
     <TextView
         android:id="@+id/textview_details_label_from"
         android:layout_width="wrap_content"
@@ -23,6 +24,7 @@
         android:text="@string/listitem_labels_from" />
 
     <TextView
+        android:id="@+id/textview_details_text_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/textview_details_label_from"
@@ -41,7 +43,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/detailsactivity_list_endpoints"
         android:layout_width="match_parent"
-        android:layout_height="115dp"
+        android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textview_details_label_endpoints"
         android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -57,11 +59,29 @@
         android:text="@string/listitem_labels_price" />
 
     <TextView
+        android:id="@+id/textview_details_text_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textview_details_label_price"
         android:layout_toEndOf="@+id/textview_details_label_price"
         tools:text="300 грн." />
+
+    <TextView
+        android:id="@+id/textview_details_label_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textview_details_label_price"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/additional_comment_text_label" />
+
+    <TextView
+        android:id="@+id/textview_details_text_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/textview_details_label_comment"
+        android:layout_toEndOf="@+id/textview_details_label_comment"
+        android:text="-" />
 
     <LinearLayout
         android:layout_width="match_parent"

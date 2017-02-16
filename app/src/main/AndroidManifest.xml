@@ -18,7 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.OrderDetailsActivity" />
+        <activity
+            android:name=".activity.OrderDetailsActivity"
+            android:theme="@style/MyThemeWithActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

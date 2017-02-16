@@ -15,6 +15,7 @@ import com.example.sveta.taxodriver.adapter.TabPagerAdapter;
 
 public class OrdersListFragment extends Fragment implements TabLayout.OnTabSelectedListener {
 
+
     private TabLayout tabLayout;
     private ViewPager viewPager;
 

@@ -15,7 +15,7 @@
     <string name="text_label_car_information">Car information:</string>
     <string name="about_text_label">About program</string>
     <string name="text_description_program">The program for taxi drivers. Designed to receive orders from customers.</string>
-    <string name="listitem_labels_count_stop">"Number of stops: "</string>
+    <string name="listitem_labels_count_stop">"Number of intermediate stops: "</string>
     <string name="listitem_labels_from">"From: "</string>
     <string name="listitem_labels_price">"Price: "</string>
     <string name="listitem_labels_to">"To: "</string>
@@ -27,5 +27,6 @@
     <string name="wait_loading_text">Please wait...</string>
     <string name="order_text">Order</string>
     <string name="currency_uah">UAH</string>
+    <string name="additional_comment_text_label">"Additional comment: "</string>
 
 </resources>

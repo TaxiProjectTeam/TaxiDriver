@@ -1,9 +1,6 @@
 package com.example.sveta.taxodriver.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.sveta.taxodriver.R;
-import com.example.sveta.taxodriver.activity.OrderDetailsActivity;
 import com.example.sveta.taxodriver.data.Coords;
 import com.example.sveta.taxodriver.data.Order;
+import com.example.sveta.taxodriver.tools.LocationConverter;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by bohdan on 07.02.17.
@@ -26,10 +22,12 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
 
     private List<Order> orders;
     private Context context;
+    private ItemClickListener clickListener;
 
-    public OrderListAdapter(Context context, List<Order> orders) {
+    public OrderListAdapter(Context context, List<Order> orders, ItemClickListener clickListener) {
         this.orders = orders;
         this.context = context;
+        this.clickListener = clickListener;
     }
 
 
@@ -37,7 +35,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     public OrdersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         OrdersViewHolder holder = null;
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_order_list_item, parent, false);
-        holder = new OrdersViewHolder(layoutView);
+        holder = new OrdersViewHolder(layoutView, clickListener);
         return holder;
     }
 
@@ -48,37 +46,11 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
 
     @Override
     public void onBindViewHolder(OrdersViewHolder holder, int position) {
-        holder.stopCountTextView.setText(Integer.toString(orders.get(position).getToCoords().size()));
-        holder.priceTextView.setText(Double.toString(orders.get(position).getPrice()) + " " + context.getResources().getString(R.string.currency_uah));
-        holder.fromTextView.setText(getCompleteAddressString(orders.get(position).getFromCoords().getLatitude(),
-                orders.get(position).getFromCoords().getLongitude()));
-        Coords toCoords = orders.get(position).getToCoords().get(orders.get(position).getToCoords().size() - 1);
-        holder.toTextView.setText(getCompleteAddressString(toCoords.getLatitude(), toCoords.getLongitude()));
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, OrderDetailsActivity.class);
-                context.startActivity(intent);
-            }
-        });
+        Order order = orders.get(position);
+        holder.bind(order);
     }
 
-    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
-        String strAdd = "";
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
-            if (addresses != null) {
-                Address returnedAddress = addresses.get(0);
-                strAdd = returnedAddress.getThoroughfare() + ", " + returnedAddress.getSubThoroughfare();
-            } else {
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return strAdd;
-    }
+
 
 
     @Override
@@ -89,20 +61,46 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         return 0;
     }
 
-    class OrdersViewHolder extends RecyclerView.ViewHolder {
+    public interface ItemClickListener {
+        void onItemClick(Order order, int position);
+    }
 
+    class OrdersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private final ItemClickListener clickListener;
         TextView fromTextView;
         TextView toTextView;
         TextView stopCountTextView;
+        Order order;
         TextView priceTextView;
 
-        public OrdersViewHolder(View itemView) {
+        public OrdersViewHolder(View itemView, ItemClickListener clickListener) {
             super(itemView);
 
             fromTextView = (TextView) itemView.findViewById(R.id.listitem_from_textview);
             toTextView = (TextView) itemView.findViewById(R.id.listitem_to_textview);
             stopCountTextView = (TextView) itemView.findViewById(R.id.listitem_stopcount_textview);
             priceTextView = (TextView) itemView.findViewById(R.id.listitem_price_textview);
+            this.clickListener = clickListener;
+            itemView.setOnClickListener(this);
         }
+
+        void bind(Order order) {
+            this.order = order;
+            stopCountTextView.setText(Integer.toString(order.getToCoords().size() - 1));
+            priceTextView.setText(Double.toString(order.getPrice()) + " " + context.getResources().getString(R.string.currency_uah));
+            fromTextView.setText(LocationConverter.getCompleteAddressString(context, order.getFromCoords().getLatitude(),
+                    order.getFromCoords().getLongitude()));
+            Coords toCoords = order.getToCoords().get(order.getToCoords().size() - 1);
+            toTextView.setText(LocationConverter.getCompleteAddressString(context, toCoords.getLatitude(), toCoords.getLongitude()));
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (clickListener != null) {
+                clickListener.onItemClick(order, getAdapterPosition());
+            }
+        }
+
     }
 }

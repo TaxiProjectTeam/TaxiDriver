@@ -26,4 +26,5 @@
     <string name="wait_loading_text">Пожалуйста, подождите...</string>
     <string name="order_text">Заказ</string>
     <string name="currency_uah">грн.</string>
+    <string name="additional_comment_text_label">"Коментарий: "</string>
 </resources>

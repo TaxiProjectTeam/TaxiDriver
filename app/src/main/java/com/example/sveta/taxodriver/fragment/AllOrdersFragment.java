@@ -2,6 +2,7 @@ package com.example.sveta.taxodriver.fragment;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.sveta.taxodriver.R;
+import com.example.sveta.taxodriver.activity.OrderDetailsActivity;
 import com.example.sveta.taxodriver.adapter.OrderListAdapter;
 import com.example.sveta.taxodriver.data.Order;
 import com.google.android.gms.common.ConnectionResult;
@@ -55,7 +57,7 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_all_orders,container,false);
 
-
+        //Show progress dialog
         load = ProgressDialog.show(getActivity(),getString(R.string.loading_text),getString(R.string.wait_loading_text));
         load.setCancelable(false);
 
@@ -70,7 +72,25 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
         ref.child("orders").addValueEventListener(this);
 
         currOrders = new ArrayList<Order>();
-        listAdapter = new OrderListAdapter(getActivity(), currOrders);
+
+        // On item click
+        listAdapter = new OrderListAdapter(getActivity(), currOrders, new OrderListAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(Order order, int position) {
+                Intent detailsScreenIntent = new Intent(getActivity(), OrderDetailsActivity.class);
+                detailsScreenIntent.putExtra("order", order);
+                startActivity(detailsScreenIntent);
+            }
+        });
+
+
+        listAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                load.dismiss();
+            }
+        });
         orderRecyclerView.setAdapter(listAdapter);
 
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL);
@@ -92,11 +112,14 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
+
+
         currOrders.clear();
         for(DataSnapshot data : dataSnapshot.getChildren()){
             Order order = data.getValue(Order.class);
             if (order.getStatus().equals("free")) {
-                currOrders.add(data.getValue(Order.class));
+                order.setId(data.getKey());
+                currOrders.add(order);
             }
         }
 
@@ -120,7 +143,6 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
                 return -1;
             }
         });
-
         listAdapter.notifyDataSetChanged();
         load.dismiss();
     }
