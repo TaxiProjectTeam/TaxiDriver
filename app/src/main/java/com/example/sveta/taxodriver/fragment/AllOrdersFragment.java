@@ -135,12 +135,16 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
                 locationB.setLatitude(o2.getFromCoords().getLatitude());
                 locationB.setLongitude(o2.getFromCoords().getLongitude());
 
-                double difference = locationA.distanceTo(currLocation) - locationB.distanceTo(currLocation);
+                try {
+                    double difference = locationA.distanceTo(currLocation) - locationB.distanceTo(currLocation);
 
-                if (difference > 0) {
-                    return 1;
+                    if (difference > 0) {
+                        return 1;
+                    }
+                    return -1;
+                } catch (NullPointerException e) {
+                    return -1;
                 }
-                return -1;
             }
         });
         listAdapter.notifyDataSetChanged();
@@ -156,8 +160,8 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
     public void onConnected(@Nullable Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_FINE_LOCATION);
+            currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
         }
-        currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
     }
 
     @Override

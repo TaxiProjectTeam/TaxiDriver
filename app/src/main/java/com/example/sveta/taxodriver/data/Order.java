@@ -5,14 +5,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Sveta on 04.01.2017.
  */
 
 public class Order implements Parcelable {
-
     public static final Parcelable.Creator<Order> CREATOR = new Parcelable.Creator<Order>() {
         @Override
         public Order createFromParcel(Parcel source) {
@@ -28,7 +26,7 @@ public class Order implements Parcelable {
     private String additionalComment;
     private Coords fromCoords;
     private Coords driverPos;
-    private List<Coords> toCoords;
+    private ArrayList<Coords> toCoords;
     private double price;
     private String driverId;
     private String status;
@@ -37,7 +35,7 @@ public class Order implements Parcelable {
     public Order() {
     }
 
-    public Order(String id, String additionalComment, Coords fromCoords, Coords driverPos, List<Coords> toCoords, double price, String driverId, String status, int time) {
+    public Order(String id, String additionalComment, Coords fromCoords, Coords driverPos, ArrayList<Coords> toCoords, double price, String driverId, String status, int time) {
         this.id = id;
         this.additionalComment = additionalComment;
         this.fromCoords = fromCoords;
@@ -94,11 +92,11 @@ public class Order implements Parcelable {
         this.fromCoords = fromCoords;
     }
 
-    public List<Coords> getToCoords() {
+    public ArrayList<Coords> getToCoords() {
         return toCoords;
     }
 
-    public void setToCoords(List<Coords> toCoords) {
+    public void setToCoords(ArrayList<Coords> toCoords) {
         this.toCoords = toCoords;
     }
 

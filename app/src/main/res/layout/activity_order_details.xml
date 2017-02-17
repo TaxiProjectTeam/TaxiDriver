@@ -41,19 +41,21 @@
         android:text="@string/label_from_points" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/detailsactivity_list_endpoints"
+        android:id="@+id/details_address_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textview_details_label_endpoints"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
         android:scrollbars="vertical" />
 
     <TextView
         android:id="@+id/textview_details_label_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/detailsactivity_list_endpoints"
+        android:layout_below="@id/details_address_recycler_view"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="@string/listitem_labels_price" />
