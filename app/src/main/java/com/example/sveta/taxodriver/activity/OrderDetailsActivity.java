@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.sveta.taxodriver.R;
 import com.example.sveta.taxodriver.adapter.AddressListAdapter;
+import com.example.sveta.taxodriver.data.Coords;
 import com.example.sveta.taxodriver.data.Order;
 import com.example.sveta.taxodriver.tools.LocationConverter;
 import com.google.android.gms.maps.CameraUpdate;
@@ -18,8 +19,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class OrderDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -76,16 +79,32 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         map.getUiSettings().setCompassEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(true);
         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(currentOrder.getFromCoords().getLatitude(), currentOrder.getFromCoords().getLongitude()))
-                .zoom(10)
-                .bearing(45)
-                .tilt(20)
+                .zoom(15)
                 .build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
         map.animateCamera(cameraUpdate);
         map.setBuildingsEnabled(true);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
         }
+        //Markers
+        String fromAddress = LocationConverter.getCompleteAddressString(this, currentOrder.getFromCoords().getLatitude(), currentOrder.getFromCoords().getLongitude());
+        map.addMarker(new MarkerOptions().position(new LatLng(currentOrder.getFromCoords().getLatitude(), currentOrder.getFromCoords().getLongitude())).icon(
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).title(fromAddress));
+
+        for (int i = 0; i < currentOrder.getToCoords().size(); i++) {
+            Coords c = currentOrder.getToCoords().get(i);
+            String address = LocationConverter.getCompleteAddressString(this, c.getLatitude(), c.getLongitude());
+            if (i == currentOrder.getToCoords().size() - 1) {
+                map.addMarker(new MarkerOptions().position(new LatLng(c.getLatitude(), c.getLongitude())).title(address));
+                break;
+            }
+            map.addMarker(new MarkerOptions().position(new LatLng(c.getLatitude(), c.getLongitude())).icon(
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
+            )
+                    .title(address));
+        }
+
 
         //TODO: draw route
     }
