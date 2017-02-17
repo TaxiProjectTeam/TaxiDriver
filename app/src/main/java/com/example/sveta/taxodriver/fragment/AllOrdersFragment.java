@@ -100,6 +100,7 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
         currLocation.setLatitude(49.444431);
         currLocation.setLongitude(32.059769);
 
+
         if (client == null) {
             client = new GoogleApiClient.Builder(getActivity())
                     .addConnectionCallbacks(this)
@@ -160,8 +161,8 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
     public void onConnected(@Nullable Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_FINE_LOCATION);
-            currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
         }
+        currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
     }
 
     @Override

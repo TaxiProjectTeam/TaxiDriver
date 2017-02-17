@@ -65,6 +65,7 @@ public class MyOrdersFragment extends Fragment implements ValueEventListener {
             @Override
             public void onItemClick(Order order, int position) {
                 Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
+                intent.putExtra("order", order);
                 startActivity(intent);
             }
         });
