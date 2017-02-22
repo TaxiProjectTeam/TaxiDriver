@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.sveta.taxodriver.R;
-import com.example.sveta.taxodriver.data.Coords;
 import com.example.sveta.taxodriver.data.Order;
-import com.example.sveta.taxodriver.tools.LocationConverter;
 
 import java.util.List;
 
@@ -87,12 +85,14 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
 
         void bind(Order order) {
             this.order = order;
-            stopCountTextView.setText(Integer.toString(order.getToCoords().size() - 1));
+            stopCountTextView.setText(String.valueOf(order.getToCoords().size() - 1));
             priceTextView.setText(Double.toString(order.getPrice()) + " " + context.getResources().getString(R.string.currency_uah));
-            fromTextView.setText(LocationConverter.getCompleteAddressString(context, order.getFromCoords().getLatitude(),
-                    order.getFromCoords().getLongitude()));
-            Coords toCoords = order.getToCoords().get(order.getToCoords().size() - 1);
-            toTextView.setText(LocationConverter.getCompleteAddressString(context, toCoords.getLatitude(), toCoords.getLongitude()));
+            fromTextView.setText(order.getFromAddress());
+            String toAddress = "";
+            if (order.getToAdress().size() != 0) {
+                toAddress = order.getToAdress().get(order.getToAdress().size() - 1);
+            }
+            toTextView.setText(toAddress);
         }
 
         @Override

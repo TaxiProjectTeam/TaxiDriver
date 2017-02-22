@@ -17,6 +17,7 @@ import com.example.sveta.taxodriver.R;
 import com.example.sveta.taxodriver.activity.OrderDetailsActivity;
 import com.example.sveta.taxodriver.adapter.OrderListAdapter;
 import com.example.sveta.taxodriver.data.Order;
+import com.example.sveta.taxodriver.tools.LocationConverter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -92,7 +93,18 @@ public class MyOrdersFragment extends Fragment implements ValueEventListener {
         for (DataSnapshot data : dataSnapshot.getChildren()) {
             Order order = data.getValue(Order.class);
             if (order.getStatus().equals("accepted") && order.getDriverId().equals(user.getUid())) {
-                currOrders.add(data.getValue(Order.class));
+                order.setFromAddress(LocationConverter.getCompleteAddressString(getActivity(),
+                        order.getFromCoords().getLatitude(),
+                        order.getFromCoords().getLongitude()));
+                List<String> toAddress = new ArrayList<String>();
+                for (int i = 0; i < order.getToCoords().size(); i++) {
+                    toAddress.add(LocationConverter.getCompleteAddressString(getActivity(),
+                            order.getToCoords().get(i).getLatitude(),
+                            order.getToCoords().get(i).getLongitude()));
+                }
+                order.setToAdress(toAddress);
+
+                currOrders.add(order);
             }
         }
         listAdapter.notifyDataSetChanged();

@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Sveta on 04.01.2017.
@@ -30,6 +31,10 @@ public class Order implements Parcelable {
     private double price;
     private String driverId;
     private String status;
+
+    private String fromAddress = "";
+    private List<String> toAdress = new ArrayList<String>();
+
     private int time;
 
     public Order() {
@@ -130,6 +135,22 @@ public class Order implements Parcelable {
 
     public void setTime(int time) {
         this.time = time;
+    }
+
+    public String getFromAddress() {
+        return fromAddress;
+    }
+
+    public void setFromAddress(String fromAddress) {
+        this.fromAddress = fromAddress;
+    }
+
+    public List<String> getToAdress() {
+        return toAdress;
+    }
+
+    public void setToAdress(List<String> toAdress) {
+        this.toAdress = toAdress;
     }
 
     @Override
