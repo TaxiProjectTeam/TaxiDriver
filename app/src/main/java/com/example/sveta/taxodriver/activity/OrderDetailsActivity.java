@@ -2,7 +2,10 @@ package com.example.sveta.taxodriver.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +19,9 @@ import com.example.sveta.taxodriver.data.Order;
 import com.example.sveta.taxodriver.tools.LocationConverter;
 import com.example.sveta.taxodriver.tools.RouteApi;
 import com.example.sveta.taxodriver.tools.RouteResponse;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +34,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,15 +45,21 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OrderDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class OrderDetailsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    LatLngBounds.Builder routeCameraChanger;
+    private static final int MY_PERMISSION_REQUEST_FINE_LOCATION = 13;
+
+    private LatLngBounds.Builder routeCameraChanger;
     private Order currentOrder;
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     private RecyclerView addressRecyclerView;
     private RecyclerView.LayoutManager manager;
     private RouteResponse routeResponse;
+    private Location currLocation;
+    private GoogleApiClient client;
+    private Retrofit retrofit;
+    private RouteApi routeApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +83,15 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         //Map
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_order_detail);
         mapFragment.getMapAsync(this);
+
+        //Google api client (current location)
+        if (client == null) {
+            client = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 
     private void showData(Order order) {
@@ -105,52 +127,75 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
             map.setMyLocationEnabled(true);
         }
         //Markers
+        IconGenerator iconFactory = new IconGenerator(this);
+
+
         String fromAddress = LocationConverter.getCompleteAddressString(this, currentOrder.getFromCoords().getLatitude(), currentOrder.getFromCoords().getLongitude());
+
         map.addMarker(new MarkerOptions().position(new LatLng(currentOrder.getFromCoords().getLatitude(), currentOrder.getFromCoords().getLongitude())).icon(
-                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).title(fromAddress));
+                BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(""))).
+                title(fromAddress));
 
         for (int i = 0; i < currentOrder.getToCoords().size(); i++) {
             Coords c = currentOrder.getToCoords().get(i);
             String address = LocationConverter.getCompleteAddressString(this, c.getLatitude(), c.getLongitude());
             if (i == currentOrder.getToCoords().size() - 1) {
-                map.addMarker(new MarkerOptions().position(new LatLng(c.getLatitude(), c.getLongitude())).title(address));
+                map.addMarker(new MarkerOptions().position(new LatLng(c.getLatitude(), c.getLongitude()))
+                        .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(String.valueOf(i + 1))))
+                        .title(address));
                 break;
             }
             map.addMarker(new MarkerOptions().position(new LatLng(c.getLatitude(), c.getLongitude())).icon(
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
+                    BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(String.valueOf(i + 1)))
             )
                     .title(address));
         }
 
+
+        //draw routes
+        retrofit = new Retrofit.Builder().baseUrl("https://maps.googleapis.com").
+                addConverterFactory(GsonConverterFactory.create())
+                .build();
+        routeApi = retrofit.create(RouteApi.class);
         getRoutes(googleMap);
 
     }
 
     private void getRoutes(GoogleMap map) {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://maps.googleapis.com").
-                addConverterFactory(GsonConverterFactory.create())
-                .build();
-        RouteApi routeApi = retrofit.create(RouteApi.class);
+
 
         //for camera zoom
         routeCameraChanger = new LatLngBounds.Builder();
 
+
         List<LatLng> allPoints = new ArrayList<LatLng>();
         LatLng fromPoint = new LatLng(currentOrder.getFromCoords().getLatitude(),
                 currentOrder.getFromCoords().getLongitude());
-        for(Coords c : currentOrder.getToCoords()){
-            //TODO: colors and from current position to start position
 
-            LatLng toPoint = new LatLng(c.getLatitude(),c.getLongitude());
-            getRouteResponse(routeApi, fromPoint.latitude + "," + fromPoint.longitude
-                    , toPoint.latitude + "," + toPoint.longitude, R.color.md_black_1000);
+        //From my location to start point
 
+
+        for (int i = 0; i < currentOrder.getToCoords().size(); i++) {
+            LatLng toPoint = new LatLng(currentOrder.getToCoords().get(i).getLatitude(),
+                    currentOrder.getToCoords().get(i).getLongitude());
+
+            //default color
+            int color = R.color.color_route_default;
+
+            //last point
+            if (i == currentOrder.getToCoords().size() - 1) {
+                color = R.color.color_route_endpoint;
+            }
+            getRouteResponse(fromPoint, toPoint, color);
             fromPoint = toPoint;
+
         }
     }
 
-    private void getRouteResponse(RouteApi api, String from, String to, final int color) {
-        Call<RouteResponse> routeCall = api.getRoute(from, to, true, "ru");
+    private void getRouteResponse(LatLng from, LatLng to, final int color) {
+        String fromString = from.latitude + "," + from.longitude;
+        String toString = to.latitude + "," + to.longitude;
+        Call<RouteResponse> routeCall = routeApi.getRoute(fromString, toString, true, "ru");
 
         //async
         routeCall.enqueue(new Callback<RouteResponse>() {
@@ -187,4 +232,36 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         CameraUpdate track = CameraUpdateFactory.newLatLngBounds(latLngBounds, size, size, 25);
         map.moveCamera(track);
     }
+
+    //route from current location to first point
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        //TODO: change to correct check permition
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_FINE_LOCATION);
+        }
+        Location currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
+        LatLng currCoords = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
+        LatLng toCoords = new LatLng(currentOrder.getFromCoords().getLatitude(),
+                currentOrder.getFromCoords().getLongitude());
+        getRouteResponse(currCoords, toCoords, R.color.color_route_from_me_to_start_points);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        client.connect();
+    }
+
+
 }
