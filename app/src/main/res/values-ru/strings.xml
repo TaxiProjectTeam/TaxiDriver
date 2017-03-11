@@ -27,4 +27,5 @@
     <string name="order_text">Заказ</string>
     <string name="currency_uah">грн.</string>
     <string name="additional_comment_text_label">"Коментарий: "</string>
+    <string name="markers_start_label">Старт</string>
 </resources>

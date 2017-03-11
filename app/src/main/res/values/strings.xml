@@ -28,5 +28,6 @@
     <string name="order_text">Order</string>
     <string name="currency_uah">UAH</string>
     <string name="additional_comment_text_label">"Additional comment: "</string>
+    <string name="markers_start_label">Start</string>
 
 </resources>

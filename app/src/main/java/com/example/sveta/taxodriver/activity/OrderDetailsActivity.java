@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -128,22 +129,21 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         }
         //Markers
         IconGenerator iconFactory = new IconGenerator(this);
-
-
+        iconFactory.setTextAppearance(R.style.markers_text_style);
         String fromAddress = LocationConverter.getCompleteAddressString(this, currentOrder.getFromCoords().getLatitude(), currentOrder.getFromCoords().getLongitude());
 
+        iconFactory.setColor(ContextCompat.getColor(this, R.color.markers_green_backgrount));
         map.addMarker(new MarkerOptions().position(new LatLng(currentOrder.getFromCoords().getLatitude(), currentOrder.getFromCoords().getLongitude())).icon(
-                BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(""))).
+                BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(getResources().getString(R.string.markers_start_label)))).
                 title(fromAddress));
 
         for (int i = 0; i < currentOrder.getToCoords().size(); i++) {
             Coords c = currentOrder.getToCoords().get(i);
             String address = LocationConverter.getCompleteAddressString(this, c.getLatitude(), c.getLongitude());
             if (i == currentOrder.getToCoords().size() - 1) {
-                map.addMarker(new MarkerOptions().position(new LatLng(c.getLatitude(), c.getLongitude()))
-                        .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(String.valueOf(i + 1))))
-                        .title(address));
-                break;
+                iconFactory.setColor(ContextCompat.getColor(this, R.color.markers_red_backgrount));
+            } else {
+                iconFactory.setColor(ContextCompat.getColor(this, R.color.markers_blue_backgrount));
             }
             map.addMarker(new MarkerOptions().position(new LatLng(c.getLatitude(), c.getLongitude())).icon(
                     BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(String.valueOf(i + 1)))

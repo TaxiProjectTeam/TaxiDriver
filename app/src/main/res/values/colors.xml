@@ -6,7 +6,10 @@
     <color name="background">#FFFFFF</color>
     <color name="text_color">#000000</color>
     <color name="button_login_color">#E65100</color>
-    <color name="color_route_from_me_to_start_points">#999E9E9E</color>
+    <color name="color_route_from_me_to_start_points">#99388E3C</color>
     <color name="color_route_default">#9900B0FF</color>
     <color name="color_route_endpoint">#99B71C1C</color>
+    <color name="markers_red_backgrount">#B71C1C</color>
+    <color name="markers_blue_backgrount">#00B0FF</color>
+    <color name="markers_green_backgrount">#388E3C</color>
 </resources>

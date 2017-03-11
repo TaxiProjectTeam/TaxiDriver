@@ -18,4 +18,8 @@
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="markers_text_style">
+        <item name="android:textColor">@color/md_white_1000</item>
+    </style>
 </resources>
