@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sveta.taxodriver.R;
 import com.example.sveta.taxodriver.adapter.AddressListAdapter;
@@ -52,14 +53,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private LatLngBounds.Builder routeCameraChanger;
     private Order currentOrder;
-    private SupportMapFragment mapFragment;
     private GoogleMap map;
-    private RecyclerView addressRecyclerView;
-    private RecyclerView.LayoutManager manager;
     private RouteResponse routeResponse;
-    private Location currLocation;
     private GoogleApiClient client;
-    private Retrofit retrofit;
     private RouteApi routeApi;
 
     @Override
@@ -74,15 +70,15 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
 
 
         //Address list
-        addressRecyclerView = (RecyclerView) findViewById(R.id.details_address_recycler_view);
-        manager = new LinearLayoutManager(this);
+        RecyclerView addressRecyclerView = (RecyclerView) findViewById(R.id.details_address_recycler_view);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
         addressRecyclerView.setLayoutManager(manager);
         AddressListAdapter adapter = new AddressListAdapter(this, currentOrder.getToCoords());
         addressRecyclerView.setAdapter(adapter);
 
 
         //Map
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_order_detail);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_order_detail);
         mapFragment.getMapAsync(this);
 
         //Google api client (current location)
@@ -153,7 +149,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
 
 
         //draw routes
-        retrofit = new Retrofit.Builder().baseUrl("https://maps.googleapis.com").
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://maps.googleapis.com").
                 addConverterFactory(GsonConverterFactory.create())
                 .build();
         routeApi = retrofit.create(RouteApi.class);
@@ -233,7 +229,6 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         map.moveCamera(track);
     }
 
-    //route from current location to first point
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         //TODO: change to correct check permition
@@ -254,7 +249,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Toast.makeText(this, getResources().getString(R.string.get_routes_error), Toast.LENGTH_SHORT).show();
     }
 
     @Override

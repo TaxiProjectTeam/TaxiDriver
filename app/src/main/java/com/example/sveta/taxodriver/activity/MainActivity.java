@@ -30,67 +30,28 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Get info from firebase about current driver
+        getCurrentUserInformation();
+
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().add(R.id.main_fragments_container, new OrdersListFragment()).commit();
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Drawer drawer = new DrawerBuilder()
-                .withActivity(this)
-                .withDrawerWidthDp(240)
-                .withToolbar(toolbar)
-                .withHeader(R.layout.drawer_header)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.text_orders_list_drawer),
-                        new PrimaryDrawerItem().withName(R.string.text_driver_info),
-                        new PrimaryDrawerItem().withName(R.string.text_about_program)
-                ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        //Replace fragments
-                        switch (position){
-                            case 1:
-                                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragments_container,new OrdersListFragment()).commit();
-                                return false;
-                            case 2:
-                                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragments_container,new UserInfoFragment()).commit();
-                                return false;
-                            case 3:
-                                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragments_container,new AboutProgramFragment()).commit();
-                                return false;
-                            default:
-                                return true;
-                        }
-                    }
-                }).build();
+        //Navigation Drawer
+        attachNavigationDrawer();
 
-        final Driver[] currDriver = {new Driver()};
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference();
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(firebaseUser != null) {
-            ref.child("drivers").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    //get Data about user from server
-                    currDriver[0] = dataSnapshot.getValue(Driver.class);
-                    CurrentDriver.setInstance(currDriver[0]);
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
     }
     @Override
     public void onBackPressed() {
@@ -115,5 +76,65 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return false;
+    }
+
+    private void getCurrentUserInformation() {
+        final Driver[] currDriver = {new Driver()};
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            ref.child("drivers").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //get Data about user from server
+                    currDriver[0] = dataSnapshot.getValue(Driver.class);
+                    CurrentDriver.setInstance(currDriver[0]);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    private void attachNavigationDrawer() {
+        final Drawer drawer = new DrawerBuilder()
+                .withActivity(this)
+                .withDrawerWidthDp(320)
+                .withToolbar(toolbar)
+                .withHeader(R.layout.drawer_header)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName(R.string.text_orders_list_drawer),
+                        new PrimaryDrawerItem().withName(R.string.text_driver_info),
+                        new PrimaryDrawerItem().withName(R.string.text_about_program)
+                ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        //Replace fragments
+                        switch (position) {
+                            case 1:
+                                getSupportFragmentManager().beginTransaction().
+                                        replace(R.id.main_fragments_container, new OrdersListFragment()).
+                                        commit();
+                                return false;
+                            case 2:
+                                getSupportFragmentManager().beginTransaction().
+                                        replace(R.id.main_fragments_container, new UserInfoFragment()).
+                                        commit();
+                                return false;
+                            case 3:
+                                getSupportFragmentManager().beginTransaction().
+                                        replace(R.id.main_fragments_container, new AboutProgramFragment()).
+                                        commit();
+                                return false;
+                            default:
+                                return true;
+                        }
+                    }
+                }).build();
+
     }
 }

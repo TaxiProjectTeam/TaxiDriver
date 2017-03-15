@@ -40,7 +40,7 @@ import java.util.List;
  * Created by bohdan on 24.01.17.
  */
 
-public class AllOrdersFragment extends Fragment implements ValueEventListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class AllOrdersFragment extends Fragment implements ValueEventListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OrderListAdapter.ItemClickListener {
 
     private static final int MY_PERMISSION_REQUEST_FINE_LOCATION = 13;
     ProgressDialog load;
@@ -58,50 +58,30 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_all_orders,container,false);
 
-        //Show progress dialog
-        load = ProgressDialog.show(getActivity(),getString(R.string.loading_text),getString(R.string.wait_loading_text));
-        load.setCancelable(false);
-
+        //Recycler view init
         orderRecyclerView = (RecyclerView) rootView.findViewById(R.id.tab_all_orders_recycler_view);
-
         layoutManager = new LinearLayoutManager(getActivity());
         orderRecyclerView.setLayoutManager(layoutManager);
 
+        //Firebase database init
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
 
-        ref.child("orders").addValueEventListener(this);
-
+        //Orders list and adapter
         currOrders = new ArrayList<Order>();
-
-        // On item click
-        listAdapter = new OrderListAdapter(getActivity(), currOrders, new OrderListAdapter.ItemClickListener() {
-            @Override
-            public void onItemClick(Order order, int position) {
-                Intent detailsScreenIntent = new Intent(getActivity(), OrderDetailsActivity.class);
-                detailsScreenIntent.putExtra("order", order);
-                startActivity(detailsScreenIntent);
-            }
-        });
-
-
-        listAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                load.dismiss();
-            }
-        });
+        listAdapter = new OrderListAdapter(getActivity(), currOrders, this);
         orderRecyclerView.setAdapter(listAdapter);
 
+        //Item decoration
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL);
         orderRecyclerView.addItemDecoration(decoration);
 
+        //default - center of cherkasy
         currLocation = new Location("current location");
         currLocation.setLatitude(49.444431);
         currLocation.setLongitude(32.059769);
 
-
+        //init google api client
         if (client == null) {
             client = new GoogleApiClient.Builder(getActivity())
                     .addConnectionCallbacks(this)
@@ -114,8 +94,6 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-
-
         currOrders.clear();
         for(DataSnapshot data : dataSnapshot.getChildren()){
             Order order = data.getValue(Order.class);
@@ -135,8 +113,14 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
             }
         }
 
-
         //Sort (minimal distance)
+        sortOrders();
+        listAdapter.notifyDataSetChanged();
+    }
+
+    private void sortOrders() {
+        load = ProgressDialog.show(getActivity(), getString(R.string.progress_sorting), getString(R.string.wait_loading_text));
+        load.setCancelable(false);
         Collections.sort(currOrders, new Comparator<Order>() {
             @Override
             public int compare(Order o1, Order o2) {
@@ -159,7 +143,6 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
                 }
             }
         });
-        listAdapter.notifyDataSetChanged();
         load.dismiss();
     }
 
@@ -174,6 +157,7 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_FINE_LOCATION);
         }
         currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
+        sortOrders();
     }
 
     @Override
@@ -190,5 +174,14 @@ public class AllOrdersFragment extends Fragment implements ValueEventListener, G
     public void onStart() {
         super.onStart();
         client.connect();
+        ref.child("orders").addValueEventListener(this);
+    }
+
+    //On item click listener
+    @Override
+    public void onItemClick(Order order, int position) {
+        Intent detailsScreenIntent = new Intent(getActivity(), OrderDetailsActivity.class);
+        detailsScreenIntent.putExtra("order", order);
+        startActivity(detailsScreenIntent);
     }
 }

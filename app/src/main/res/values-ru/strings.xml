@@ -28,4 +28,6 @@
     <string name="currency_uah">грн.</string>
     <string name="additional_comment_text_label">"Коментарий: "</string>
     <string name="markers_start_label">Старт</string>
+    <string name="get_routes_error">Ошибка получения маршрута</string>
+    <string name="progress_sorting">Заказы сортируются...</string>
 </resources>

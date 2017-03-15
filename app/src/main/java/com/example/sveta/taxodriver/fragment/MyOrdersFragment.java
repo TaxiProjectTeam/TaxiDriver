@@ -1,7 +1,6 @@
 package com.example.sveta.taxodriver.fragment;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,7 +37,6 @@ public class MyOrdersFragment extends Fragment implements ValueEventListener {
     private RecyclerView.LayoutManager layoutManager;
     private OrderListAdapter listAdapter;
     private List<Order> currOrders;
-    private ProgressDialog load;
     private FirebaseUser user;
     private FirebaseDatabase database;
     private DatabaseReference ref;
@@ -47,9 +45,6 @@ public class MyOrdersFragment extends Fragment implements ValueEventListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_my_orders, container, false);
-        //Show progress dialog
-        load = ProgressDialog.show(getActivity(), getString(R.string.loading_text), getString(R.string.wait_loading_text));
-        load.setCancelable(false);
 
         orderRecyclerView = (RecyclerView) rootView.findViewById(R.id.tab_my_orders_recycler_view);
 
@@ -74,7 +69,6 @@ public class MyOrdersFragment extends Fragment implements ValueEventListener {
             @Override
             public void onChanged() {
                 super.onChanged();
-                load.dismiss();
             }
         });
         orderRecyclerView.setAdapter(listAdapter);

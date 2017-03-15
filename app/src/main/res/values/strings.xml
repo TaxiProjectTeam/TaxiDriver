@@ -29,5 +29,7 @@
     <string name="currency_uah">UAH</string>
     <string name="additional_comment_text_label">"Additional comment: "</string>
     <string name="markers_start_label">Start</string>
+    <string name="get_routes_error">Get routes error</string>
+    <string name="progress_sorting">Orders sorting...</string>
 
 </resources>
