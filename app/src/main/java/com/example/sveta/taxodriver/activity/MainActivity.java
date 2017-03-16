@@ -21,6 +21,7 @@ import com.example.sveta.taxodriver.data.Driver;
 import com.example.sveta.taxodriver.data.Order;
 import com.example.sveta.taxodriver.fragment.AboutProgramFragment;
 import com.example.sveta.taxodriver.fragment.OrdersListFragment;
+import com.example.sveta.taxodriver.fragment.ProgressFragment;
 import com.example.sveta.taxodriver.fragment.UserInfoFragment;
 import com.example.sveta.taxodriver.tools.LocationConverter;
 import com.google.android.gms.common.ConnectionResult;
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         getCurrentUserInformation();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.main_fragments_container, new OrdersListFragment()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.main_fragments_container, new ProgressFragment()).commit();
         }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -224,6 +225,8 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
             listener.onDataReady(myOrders, ORDER_TYPE_MY);
         }
 
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragments_container, new OrdersListFragment()).commit();
     }
 
     @Override
@@ -235,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     protected void onStart() {
         super.onStart();
         ref.child("orders").addValueEventListener(this);
+        client.connect();
     }
 
     private void sortOrders(List<Order> currOrders) {
@@ -270,6 +274,10 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
         sortOrders(freeOrders);
         sortOrders(myOrders);
+        for (OnDataReadyListener listener : onDataReadyListeners) {
+            listener.onDataReady(freeOrders, ORDER_TYPE_FREE);
+            listener.onDataReady(myOrders, ORDER_TYPE_MY);
+        }
     }
 
     @Override
