@@ -1,4 +1,4 @@
-package com.example.sveta.taxodriver.data;
+package com.ck.taxoteam.taxodriver.data;
 
 /**
  * Created by bohdan on 30.01.17.
@@ -6,7 +6,9 @@ package com.example.sveta.taxodriver.data;
 
 public class CurrentDriver {
     private static Driver instance;
-    private CurrentDriver(){};
+
+    private CurrentDriver() {
+    }
 
     public static Driver getInstance(){
         if (instance == null) {

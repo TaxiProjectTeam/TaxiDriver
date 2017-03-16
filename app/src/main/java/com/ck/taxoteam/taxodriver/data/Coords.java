@@ -1,4 +1,4 @@
-package com.example.sveta.taxodriver.data;
+package com.ck.taxoteam.taxodriver.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

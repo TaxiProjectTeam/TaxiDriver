@@ -1,4 +1,4 @@
-package com.example.sveta.taxodriver.activity;
+package com.ck.taxoteam.taxodriver.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -14,13 +14,13 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.sveta.taxodriver.R;
-import com.example.sveta.taxodriver.adapter.AddressListAdapter;
-import com.example.sveta.taxodriver.data.Coords;
-import com.example.sveta.taxodriver.data.Order;
-import com.example.sveta.taxodriver.tools.LocationConverter;
-import com.example.sveta.taxodriver.tools.RouteApi;
-import com.example.sveta.taxodriver.tools.RouteResponse;
+import com.ck.taxoteam.taxodriver.R;
+import com.ck.taxoteam.taxodriver.adapter.AddressListAdapter;
+import com.ck.taxoteam.taxodriver.data.Coords;
+import com.ck.taxoteam.taxodriver.data.Order;
+import com.ck.taxoteam.taxodriver.tools.LocationConverter;
+import com.ck.taxoteam.taxodriver.tools.RouteApi;
+import com.ck.taxoteam.taxodriver.tools.RouteResponse;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;

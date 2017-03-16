@@ -1,4 +1,4 @@
-package com.example.sveta.taxodriver.fragment;
+package com.ck.taxoteam.taxodriver.fragment;
 
 
 import android.os.Bundle;
@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.sveta.taxodriver.R;
-import com.example.sveta.taxodriver.adapter.TabPagerAdapter;
+import com.ck.taxoteam.taxodriver.R;
+import com.ck.taxoteam.taxodriver.adapter.TabPagerAdapter;
 
 
 public class OrdersListFragment extends Fragment implements TabLayout.OnTabSelectedListener {

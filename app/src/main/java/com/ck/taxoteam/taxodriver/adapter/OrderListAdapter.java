@@ -1,4 +1,4 @@
-package com.example.sveta.taxodriver.adapter;
+package com.ck.taxoteam.taxodriver.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.sveta.taxodriver.R;
-import com.example.sveta.taxodriver.data.Order;
+import com.ck.taxoteam.taxodriver.R;
+import com.ck.taxoteam.taxodriver.data.Order;
 
 import java.util.List;
 

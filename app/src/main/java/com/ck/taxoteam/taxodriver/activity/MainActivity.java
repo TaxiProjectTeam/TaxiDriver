@@ -1,4 +1,4 @@
-package com.example.sveta.taxodriver.activity;
+package com.ck.taxoteam.taxodriver.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,15 +15,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.sveta.taxodriver.R;
-import com.example.sveta.taxodriver.data.CurrentDriver;
-import com.example.sveta.taxodriver.data.Driver;
-import com.example.sveta.taxodriver.data.Order;
-import com.example.sveta.taxodriver.fragment.AboutProgramFragment;
-import com.example.sveta.taxodriver.fragment.OrdersListFragment;
-import com.example.sveta.taxodriver.fragment.ProgressFragment;
-import com.example.sveta.taxodriver.fragment.UserInfoFragment;
-import com.example.sveta.taxodriver.tools.LocationConverter;
+import com.ck.taxoteam.taxodriver.R;
+import com.ck.taxoteam.taxodriver.data.CurrentDriver;
+import com.ck.taxoteam.taxodriver.data.Driver;
+import com.ck.taxoteam.taxodriver.data.Order;
+import com.ck.taxoteam.taxodriver.fragment.AboutProgramFragment;
+import com.ck.taxoteam.taxodriver.fragment.OrdersListFragment;
+import com.ck.taxoteam.taxodriver.fragment.ProgressFragment;
+import com.ck.taxoteam.taxodriver.fragment.UserInfoFragment;
+import com.ck.taxoteam.taxodriver.tools.LocationConverter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;

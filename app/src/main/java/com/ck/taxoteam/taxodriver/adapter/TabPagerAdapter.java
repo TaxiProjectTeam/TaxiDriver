@@ -1,13 +1,13 @@
-package com.example.sveta.taxodriver.adapter;
+package com.ck.taxoteam.taxodriver.adapter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.sveta.taxodriver.R;
-import com.example.sveta.taxodriver.fragment.AllOrdersFragment;
-import com.example.sveta.taxodriver.fragment.MyOrdersFragment;
+import com.ck.taxoteam.taxodriver.R;
+import com.ck.taxoteam.taxodriver.fragment.AllOrdersFragment;
+import com.ck.taxoteam.taxodriver.fragment.MyOrdersFragment;
 
 /**
  * Created by bohdan on 24.01.17.

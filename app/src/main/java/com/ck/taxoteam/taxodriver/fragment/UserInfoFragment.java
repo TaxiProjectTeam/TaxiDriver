@@ -1,4 +1,4 @@
-package com.example.sveta.taxodriver.fragment;
+package com.ck.taxoteam.taxodriver.fragment;
 
 
 import android.os.Bundle;
@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.sveta.taxodriver.R;
-import com.example.sveta.taxodriver.data.CurrentDriver;
-import com.example.sveta.taxodriver.data.Driver;
+import com.ck.taxoteam.taxodriver.R;
+import com.ck.taxoteam.taxodriver.data.CurrentDriver;
+import com.ck.taxoteam.taxodriver.data.Driver;
 
 /**
  * Created by bohdan on 24.01.17.
