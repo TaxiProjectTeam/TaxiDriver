@@ -32,4 +32,7 @@
     <string name="get_routes_error">Get routes error</string>
     <string name="progress_sorting">Orders sorting...</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

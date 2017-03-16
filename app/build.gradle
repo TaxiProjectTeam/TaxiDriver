@@ -41,6 +41,12 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile('com.mikepenz:materialdrawer:5.8.1@aar') {
+        transitive = true
+    }
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
+        transitive = true;
+    }
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:support-v4:25.1.1'
     compile 'com.android.support:recyclerview-v7:25.1.1'
@@ -52,14 +58,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'com.google.android.gms:play-services-location:10.0.1'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.google.maps.android:android-maps-utils:0.4+'
+    compile 'com.google.maps.android:android-maps-utils:0.4.+'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile('com.mikepenz:materialdrawer:5.8.1@aar') {
-        transitive = true
-    }
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
-        transitive = true;
-    }
 }
 
 apply plugin: 'com.google.gms.google-services'
