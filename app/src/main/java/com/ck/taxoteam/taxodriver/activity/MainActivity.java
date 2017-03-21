@@ -1,6 +1,7 @@
 package com.ck.taxoteam.taxodriver.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -193,40 +194,54 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     //get data from firebase
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-        freeOrders.clear();
-        myOrders.clear();
-        for (DataSnapshot data : dataSnapshot.getChildren()) {
-            Order order = data.getValue(Order.class);
-            order.setId(data.getKey());
-            order.setFromAddress(LocationConverter.getCompleteAddressString(this,
-                    order.getFromCoords().getLatitude(),
-                    order.getFromCoords().getLongitude()));
-            List<String> toAddress = new ArrayList<String>();
-            for (int i = 0; i < order.getToCoords().size(); i++) {
-                toAddress.add(LocationConverter.getCompleteAddressString(this,
-                        order.getToCoords().get(i).getLatitude(),
-                        order.getToCoords().get(i).getLongitude()));
+        final DataSnapshot snapshot = dataSnapshot;
+        final Context activityContext = this;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                freeOrders.clear();
+                myOrders.clear();
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    Order order = data.getValue(Order.class);
+                    order.setId(data.getKey());
+                    order.setFromAddress(LocationConverter.getCompleteAddressString(activityContext,
+                            order.getFromCoords().getLatitude(),
+                            order.getFromCoords().getLongitude()));
+                    List<String> toAddress = new ArrayList<String>();
+                    for (int i = 0; i < order.getToCoords().size(); i++) {
+                        toAddress.add(LocationConverter.getCompleteAddressString(activityContext,
+                                order.getToCoords().get(i).getLatitude(),
+                                order.getToCoords().get(i).getLongitude()));
+                    }
+                    order.setToAdress(toAddress);
+                    if (order.getStatus().equals("free")) {
+                        freeOrders.add(order);
+                    } else if (order.getStatus().equals("accepted") && order.getDriverId().equals(user.getUid())) {
+                        myOrders.add(order);
+                    }
+                }
+                //Sort (minimal distance)
+                sortOrders(freeOrders);
+                sortOrders(myOrders);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Send messages to fragments
+                        for (OnDataReadyListener listener : onDataReadyListeners) {
+                            listener.onDataReady(freeOrders, ORDER_TYPE_FREE);
+                            listener.onDataReady(myOrders, ORDER_TYPE_MY);
+                        }
+
+
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_fragments_container, new OrdersListFragment()).commit();
+
+                    }
+                });
             }
-            order.setToAdress(toAddress);
-            if (order.getStatus().equals("free")) {
-                freeOrders.add(order);
-            } else if (order.getStatus().equals("accepted") && order.getDriverId().equals(user.getUid())) {
-                myOrders.add(order);
-            }
-        }
-
-        //Sort (minimal distance)
-        sortOrders(freeOrders);
-        sortOrders(myOrders);
-
-        //Send messages to fragments
-        for (OnDataReadyListener listener : onDataReadyListeners) {
-            listener.onDataReady(freeOrders, ORDER_TYPE_FREE);
-            listener.onDataReady(myOrders, ORDER_TYPE_MY);
-        }
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_fragments_container, new OrdersListFragment()).commit();
+        });
+        thread.start();
     }
 
     @Override
@@ -240,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         ref.child("orders").addValueEventListener(this);
         client.connect();
     }
+
 
     private void sortOrders(List<Order> currOrders) {
         Collections.sort(currOrders, new Comparator<Order>() {
@@ -300,6 +316,12 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
 
     public List<Order> getMyOrders() {
         return myOrders;
+    }
+
+    @Override
+    protected void onStop() {
+        ref.child("orders").removeEventListener(this);
+        super.onStop();
     }
 
     public interface OnDataReadyListener {
