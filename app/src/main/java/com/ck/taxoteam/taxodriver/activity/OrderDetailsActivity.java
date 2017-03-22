@@ -19,6 +19,7 @@ import com.ck.taxoteam.taxodriver.adapter.AddressListAdapter;
 import com.ck.taxoteam.taxodriver.data.Coords;
 import com.ck.taxoteam.taxodriver.data.Order;
 import com.ck.taxoteam.taxodriver.tools.LocationConverter;
+import com.ck.taxoteam.taxodriver.tools.PermitionsHelper;
 import com.ck.taxoteam.taxodriver.tools.RouteApi;
 import com.ck.taxoteam.taxodriver.tools.RouteResponse;
 import com.google.android.gms.common.ConnectionResult;
@@ -49,7 +50,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OrderDetailsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    private static final int MY_PERMISSION_REQUEST_FINE_LOCATION = 13;
+
 
     private LatLngBounds.Builder routeCameraChanger;
     private Order currentOrder;
@@ -114,7 +115,8 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.getUiSettings().setCompassEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(true);
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(currentOrder.getFromCoords().getLatitude(), currentOrder.getFromCoords().getLongitude()))
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(currentOrder.getFromCoords().getLatitude(), currentOrder.getFromCoords().getLongitude()))
                 .zoom(15)
                 .build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
@@ -231,15 +233,14 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        //TODO: change to correct check permition
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_FINE_LOCATION);
+        Location currLocation;
+        if (PermitionsHelper.checkLocationPermitions(this)) {
+            currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
+            LatLng currCoords = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
+            LatLng toCoords = new LatLng(currentOrder.getFromCoords().getLatitude(),
+                    currentOrder.getFromCoords().getLongitude());
+            getRouteResponse(currCoords, toCoords, R.color.color_route_from_me_to_start_points);
         }
-        Location currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
-        LatLng currCoords = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
-        LatLng toCoords = new LatLng(currentOrder.getFromCoords().getLatitude(),
-                currentOrder.getFromCoords().getLongitude());
-        getRouteResponse(currCoords, toCoords, R.color.color_route_from_me_to_start_points);
     }
 
     @Override
