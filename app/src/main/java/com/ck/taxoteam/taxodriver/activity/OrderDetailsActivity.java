@@ -2,6 +2,7 @@ package com.ck.taxoteam.taxodriver.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +53,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OrderDetailsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class OrderDetailsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnTouchListener {
 
 
 
@@ -58,6 +63,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
     private RouteResponse routeResponse;
     private GoogleApiClient client;
     private RouteApi routeApi;
+    private RelativeLayout relativeInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +75,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         currentOrder = data.getParcelable("order");
         showData(currentOrder);
 
+        //Relative layout
+        relativeInformation = (RelativeLayout) findViewById(R.id.detailsactivity_relative_information);
+        relativeInformation.setOnTouchListener(this);
 
         //Address list
         RecyclerView addressRecyclerView = (RecyclerView) findViewById(R.id.details_address_recycler_view);
@@ -260,4 +269,16 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        final float y = event.getRawY();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) v.getLayoutParams();
+
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_MOVE:
+                params.height = (int) (Resources.getSystem().getDisplayMetrics().heightPixels - y);
+                v.setLayoutParams(params);
+        }
+        return true;
+    }
 }

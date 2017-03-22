@@ -1,118 +1,94 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_order_details"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.ck.taxoteam.taxodriver.activity.OrderDetailsActivity">
+    android:layout_height="match_parent">
 
     <fragment
         android:id="@+id/map_order_detail"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="250dp" />
+        android:layout_height="match_parent" />
 
-
-    <TextView
-        android:id="@+id/textview_details_label_from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/map_order_detail"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/listitem_labels_from" />
-
-    <TextView
-        android:id="@+id/textview_details_text_from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/textview_details_label_from"
-        android:layout_toEndOf="@id/textview_details_label_from"
-        tools:text="бул. Шевченка, 350" />
-
-    <TextView
-        android:id="@+id/textview_details_label_endpoints"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textview_details_label_from"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="@string/label_from_points" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/details_address_recycler_view"
+    <RelativeLayout
+        android:id="@+id/detailsactivity_relative_information"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textview_details_label_endpoints"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
-        android:scrollbars="vertical" />
+        android:layout_height="150dp"
+        android:layout_gravity="bottom"
+        android:background="@color/md_white_1000"
+        android:clickable="true"
+        android:elevation="4dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:minHeight="100dp">
 
-    <TextView
-        android:id="@+id/textview_details_label_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/details_address_recycler_view"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/listitem_labels_price" />
-
-    <TextView
-        android:id="@+id/textview_details_text_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textview_details_label_price"
-        android:layout_toEndOf="@+id/textview_details_label_price"
-        tools:text="300 грн." />
-
-    <TextView
-        android:id="@+id/textview_details_label_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textview_details_label_price"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/additional_comment_text_label" />
-
-    <TextView
-        android:id="@+id/textview_details_text_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/textview_details_label_comment"
-        android:layout_toEndOf="@+id/textview_details_label_comment"
-        android:text="-" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/detailsactivity_button_accept"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        <TextView
+            android:id="@+id/textview_details_label_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_weight="1"
-            android:background="@color/button_login_color"
-            android:text="@string/button_text_accept" />
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/listitem_labels_from" />
 
-        <Button
-            android:id="@+id/detailsactivity_button_navigation"
+        <TextView
+            android:id="@+id/textview_details_text_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/textview_details_label_from"
+            android:layout_toEndOf="@id/textview_details_label_from"
+            tools:text="бул. Шевченка, 350" />
+
+        <TextView
+            android:id="@+id/textview_details_label_endpoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textview_details_label_from"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="@string/label_from_points" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/details_address_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textview_details_label_endpoints"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:scrollbars="vertical" />
+
+        <TextView
+            android:id="@+id/textview_details_label_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/details_address_recycler_view"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_weight="1"
-            android:background="@color/button_login_color"
-            android:text="@string/button_text_navigation" />
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/listitem_labels_price" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/textview_details_text_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textview_details_label_price"
+            android:layout_toEndOf="@+id/textview_details_label_price"
+            tools:text="300 грн." />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/textview_details_label_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textview_details_label_price"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/additional_comment_text_label" />
+
+        <TextView
+            android:id="@+id/textview_details_text_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/textview_details_label_comment"
+            android:layout_toEndOf="@+id/textview_details_label_comment"
+            android:text="-" />
+    </RelativeLayout>
+</FrameLayout>
