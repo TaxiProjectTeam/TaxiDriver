@@ -17,6 +17,7 @@ import com.ck.taxoteam.taxodriver.activity.OrderDetailsActivity;
 import com.ck.taxoteam.taxodriver.adapter.OrderListAdapter;
 import com.ck.taxoteam.taxodriver.data.Order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,17 +39,10 @@ public class AllOrdersFragment extends Fragment implements OrderListAdapter.Item
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_all_orders,container,false);
 
-        //Get order list
-        currOrders = ((MainActivity) getActivity()).getFreeOrders();
-
         //Recycler view init
         orderRecyclerView = (RecyclerView) rootView.findViewById(R.id.tab_all_orders_recycler_view);
         layoutManager = new LinearLayoutManager(getActivity());
         orderRecyclerView.setLayoutManager(layoutManager);
-
-        //Adapter
-        listAdapter = new OrderListAdapter(getActivity(), currOrders, this);
-        orderRecyclerView.setAdapter(listAdapter);
 
         //Item decoration
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL);
@@ -60,6 +54,17 @@ public class AllOrdersFragment extends Fragment implements OrderListAdapter.Item
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        //Get order list
+        currOrders = new ArrayList<Order>();
+        currOrders.addAll(((MainActivity) getActivity()).getFreeOrders());
+        //Adapter
+        listAdapter = new OrderListAdapter(getActivity(), currOrders, this);
+        listAdapter.setHasStableIds(true);
+        orderRecyclerView.setAdapter(listAdapter);
+        super.onResume();
+    }
 
     //On item click listener
     @Override
@@ -72,9 +77,9 @@ public class AllOrdersFragment extends Fragment implements OrderListAdapter.Item
     @Override
     public void onDataReady(List<Order> data, boolean orderType) {
         if (orderType == ORDER_TYPE_FREE) {
-            currOrders = data;
-            listAdapter = new OrderListAdapter(getActivity(), currOrders, this);
-            orderRecyclerView.setAdapter(listAdapter);
+            currOrders.clear();
+            currOrders.addAll(data);
+            listAdapter.notifyDataSetChanged();
         }
     }
 }

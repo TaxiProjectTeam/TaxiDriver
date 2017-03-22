@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
                     .addApi(LocationServices.API)
                     .build();
         }
+
+        ref.child("orders").addValueEventListener(this);
     }
 
     @Override
@@ -252,7 +254,6 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     @Override
     protected void onStart() {
         super.onStart();
-        ref.child("orders").addValueEventListener(this);
         client.connect();
     }
 
@@ -288,12 +289,6 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_FINE_LOCATION);
         }
         currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
-        sortOrders(freeOrders);
-        sortOrders(myOrders);
-        for (OnDataReadyListener listener : onDataReadyListeners) {
-            listener.onDataReady(freeOrders, ORDER_TYPE_FREE);
-            listener.onDataReady(myOrders, ORDER_TYPE_MY);
-        }
     }
 
     @Override
@@ -319,9 +314,9 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     }
 
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
         ref.child("orders").removeEventListener(this);
-        super.onStop();
+        super.onDestroy();
     }
 
     public interface OnDataReadyListener {
