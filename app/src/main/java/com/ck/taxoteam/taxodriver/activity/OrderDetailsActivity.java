@@ -15,7 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +63,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
     private RouteResponse routeResponse;
     private GoogleApiClient client;
     private RouteApi routeApi;
-    private RelativeLayout relativeInformation;
+    private LinearLayout linearLayoutInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +76,8 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         showData(currentOrder);
 
         //Relative layout
-        relativeInformation = (RelativeLayout) findViewById(R.id.detailsactivity_relative_information);
-        relativeInformation.setOnTouchListener(this);
+        linearLayoutInformation = (LinearLayout) findViewById(R.id.detailsactivity_relative_information);
+        linearLayoutInformation.setOnTouchListener(this);
 
         //Address list
         RecyclerView addressRecyclerView = (RecyclerView) findViewById(R.id.details_address_recycler_view);
