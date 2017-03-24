@@ -2,7 +2,6 @@ package com.ck.taxoteam.taxodriver.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,8 +11,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -64,6 +65,11 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
     private GoogleApiClient client;
     private RouteApi routeApi;
     private LinearLayout linearLayoutInformation;
+    private float lastTouchPosition;
+    private float dpScale;
+    ViewGroup.LayoutParams mapParams;
+    private SupportMapFragment mapFragment;
+    private int displayHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +94,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
 
 
         //Map
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_order_detail);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_order_detail);
         mapFragment.getMapAsync(this);
 
         //Google api client (current location)
@@ -99,6 +105,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
                     .addApi(LocationServices.API)
                     .build();
         }
+        dpScale = getResources().getDisplayMetrics().density;
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        displayHeight = metrics.heightPixels;
     }
 
     private void showData(Order order) {
@@ -120,6 +130,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mapParams = mapFragment.getView().getLayoutParams();
         map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.getUiSettings().setCompassEnabled(true);
@@ -275,10 +286,24 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) v.getLayoutParams();
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                lastTouchPosition = event.getRawY();
+                break;
             case MotionEvent.ACTION_MOVE:
-                params.height = (int) (Resources.getSystem().getDisplayMetrics().heightPixels - y);
+                params.height += lastTouchPosition - y;
+                if(params.height < (60 * dpScale)){
+                    //set 60 dp - minimum
+                    params.height = (int) (60 * dpScale);
+                }
+                if(params.height > (300*dpScale)){
+                    //set 300 dp - maximum
+                    params.height = (int) (300 * dpScale);
+                }
+                lastTouchPosition = y;
                 v.setLayoutParams(params);
         }
+        //mapParams.height = (int) (displayHeight - params.height
+          //      -56 * dpScale);         //Toolbar size
         return true;
     }
 }
