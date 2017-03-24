@@ -10,117 +10,112 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.h6ah4i.android.materialshadowninepatch.MaterialShadowContainerView
-        style="@style/ms9_DefaultShadowStyle"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:ms9_shadowElevation="10dp"
-        app:ms9_shadowTranslationZ="5dp">
+        android:clipToPadding="false"
+        android:paddingTop="10dp">
 
         <LinearLayout
-        android:id="@+id/detailsactivity_relative_information"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-            android:background="@color/md_grey_200"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-            android:minHeight="100dp"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/details_accept_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="end"
-                android:layout_margin="8dp"
-                android:background="@color/md_grey_200"
-                android:contentDescription="@null"
-                android:scaleType="centerCrop"
-                android:src="@drawable/accept_button_icon" />
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:padding="4dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/textview_details_label_from"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/listitem_labels_from" />
-
-        <TextView
-            android:id="@+id/textview_details_text_from"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/textview_details_label_from"
-            android:layout_toEndOf="@id/textview_details_label_from"
-            tools:text="бул. Шевченка, 350" />
-
-        <TextView
-            android:id="@+id/textview_details_label_endpoints"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textview_details_label_from"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:text="@string/label_from_points" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/details_address_recycler_view"
+            android:id="@+id/detailsactivity_relative_information"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textview_details_label_endpoints"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
-            android:scrollbars="vertical" />
+            android:layout_height="60dp"
+            android:background="@color/md_grey_200"
+            android:padding="6dp"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:elevation="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/details_button_accept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:text="@string/button_text_accept" />
 
+            <ImageView
+                android:id="@+id/details_price_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/price_icon" />
 
-        <TextView
-            android:id="@+id/textview_details_label_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/details_address_recycler_view"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/listitem_labels_price" />
+            <TextView
+                android:id="@+id/textview_details_text_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                tools:text="300 грн."
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/details_price_icon" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/textview_details_text_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textview_details_label_price"
-            android:layout_toEndOf="@+id/textview_details_label_price"
-            tools:text="300 грн." />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="30dp"
+                android:id="@+id/icon_from"
+                android:layout_centerVertical="true"
+                android:layout_height="30dp"
+                android:src="@drawable/fromicon"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:id="@+id/textview_details_text_from"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_toEndOf="@id/icon_from"
+                tools:text="бул. Шевченка, 350" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/textview_details_label_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textview_details_label_price"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/additional_comment_text_label" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textview_details_text_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/textview_details_label_comment"
-            android:layout_toEndOf="@+id/textview_details_label_comment"
-            android:text="-" />
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/toicon"
+                    android:src="@drawable/toicon"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/details_address_recycler_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_toEndOf="@+id/toicon" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/commenticon"
+                    android:src="@drawable/comment_icon"/>
+            <TextView
+                android:id="@+id/textview_details_text_comment"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_toEndOf="@id/commenticon"
+                android:layout_height="wrap_content"
+                android:text="-" />
+            </RelativeLayout>
         </LinearLayout>
-    </com.h6ah4i.android.materialshadowninepatch.MaterialShadowContainerView>
+    </FrameLayout>
 </FrameLayout>
