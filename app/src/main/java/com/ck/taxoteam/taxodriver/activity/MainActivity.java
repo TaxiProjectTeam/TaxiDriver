@@ -196,11 +196,11 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     public void onDataChange(DataSnapshot dataSnapshot) {
         final DataSnapshot snapshot = dataSnapshot;
         final Context activityContext = this;
+        freeOrders.clear();
+        myOrders.clear();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                freeOrders.clear();
-                myOrders.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Order order = data.getValue(Order.class);
                     order.setId(data.getKey());
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
                     order.setToAdress(toAddress);
                     if (order.getStatus().equals("free")) {
                         freeOrders.add(order);
-                    } else if (order.getStatus().equals("accepted") && order.getDriverId().equals(user.getUid())) {
+                    } else if (order.getDriverId().equals(user.getUid())) {
                         myOrders.add(order);
                     }
                 }

@@ -34,5 +34,16 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="accept_dialog_title">Confirmation</string>
+    <string name="accept_dialog_question">Are you sure you want to confirm this order?</string>
+    <string name="accept_dialog_positive_button_text">Yes</string>
+    <string name="accept_dialog_negative_button_text">No</string>
+    <string name="button_text_arrived">Arrived</string>
+    <string name="label_orders_are_downloaded">Orders are downloaded...</string>
+    <string name="button_text_completed">Completed</string>
+    <string name="dialog_order_completed_title">Order completed</string>
+    <string name="dialog_order_completed_message">Do not forget to pay the customer</string>
+    <string name="ok_button">OK</string>
+    <string name="toast_arrive_start_place">Expect client</string>
 
 </resources>

@@ -30,4 +30,15 @@
     <string name="markers_start_label">Старт</string>
     <string name="get_routes_error">Помилка отримання маршруту</string>
     <string name="progress_sorting">Замовлення сортуються...</string>
+    <string name="accept_dialog_title">Підтвердження дії</string>
+    <string name="accept_dialog_question">Ви впевнені, що бажаєте підтвердити дане замовлення?</string>
+    <string name="accept_dialog_positive_button_text">Так</string>
+    <string name="accept_dialog_negative_button_text">Ні</string>
+    <string name="button_text_arrived">Прибув</string>
+    <string name="label_orders_are_downloaded">Замовлення завантажуються...</string>
+    <string name="button_text_completed">Виконано</string>
+    <string name="dialog_order_completed_title">Замовлення виконано</string>
+    <string name="dialog_order_completed_message">Не забудьте розрахуватися з клієнтом</string>
+    <string name="ok_button">OK</string>
+    <string name="toast_arrive_start_place">Очікуйте на клієнта</string>
 </resources>

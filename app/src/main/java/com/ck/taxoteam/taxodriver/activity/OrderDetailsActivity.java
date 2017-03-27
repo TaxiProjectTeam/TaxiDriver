@@ -1,6 +1,7 @@
 package com.ck.taxoteam.taxodriver.activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,6 +45,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.maps.android.PolyUtil;
 import com.google.maps.android.ui.IconGenerator;
 
@@ -54,13 +61,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OrderDetailsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnTouchListener {
+public class OrderDetailsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnTouchListener, View.OnClickListener {
 
 
 
     private LatLngBounds.Builder routeCameraChanger;
     private Order currentOrder;
     private GoogleMap map;
+    private Button actionButton;
     private RouteResponse routeResponse;
     private GoogleApiClient client;
     private RouteApi routeApi;
@@ -70,6 +78,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
     ViewGroup.LayoutParams mapParams;
     private SupportMapFragment mapFragment;
     private int displayHeight;
+    private DatabaseReference firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +118,12 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         displayHeight = metrics.heightPixels;
+
+        //Action button
+        actionButtonInit();
+
+        //database
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     private void showData(Order order) {
@@ -302,8 +317,82 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
                 lastTouchPosition = y;
                 v.setLayoutParams(params);
         }
-        //mapParams.height = (int) (displayHeight - params.height
-          //      -56 * dpScale);         //Toolbar size
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(currentOrder.getStatus()){
+            case "free":
+                acceptOrder();
+                break;
+            case "accepted":
+                arrivedToStartPosition();
+                Toast.makeText(this,getResources().getString(R.string.toast_arrive_start_place),Toast.LENGTH_SHORT).show();
+                break;
+            case "arrived":
+                completeOrder();
+                break;
+        }
+    }
+    private void acceptOrder(){
+        new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.accept_dialog_title))
+                .setMessage(getResources().getString(R.string.accept_dialog_question))
+                .setPositiveButton(getResources().getString(R.string.accept_dialog_positive_button_text), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        actionButton.setText(R.string.button_text_arrived);
+                        firebaseDatabase.child("orders").child(currentOrder.getId()).child("status").setValue("accepted");
+                        currentOrder.setStatus("accepted");
+
+                        //Write driver information to order
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                        FirebaseUser currUser = auth.getCurrentUser();
+                        firebaseDatabase.child("orders").child(currentOrder.getId()).child("driverId").setValue(currUser.getUid());
+                        currentOrder.setDriverId(currUser.getUid());
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.accept_dialog_negative_button_text), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
+    private void actionButtonInit(){
+        actionButton = (Button) findViewById(R.id.details_button_action);
+        actionButton.setOnClickListener(this);
+        switch (currentOrder.getStatus()) {
+            case "accepted":
+                actionButton.setText(R.string.button_text_arrived);
+                break;
+            case "arrived":
+                actionButton.setText(R.string.button_text_completed);
+                break;
+            case "completed":
+                actionButton.setVisibility(View.INVISIBLE);
+                break;
+        }
+    }
+    private void arrivedToStartPosition(){
+        actionButton.setText(getResources().getString(R.string.button_text_completed));
+        firebaseDatabase.child("orders").child(currentOrder.getId()).child("status").setValue("arrived");
+        currentOrder.setStatus("arrived");
+    }
+    private void completeOrder(){
+        new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.dialog_order_completed_title))
+                .setMessage(getResources().getString(R.string.dialog_order_completed_message))
+                .setPositiveButton(getResources().getString(R.string.ok_button), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).show();
+        actionButton.setVisibility(View.INVISIBLE);
+        firebaseDatabase.child("orders").child(currentOrder.getId()).child("status").setValue("completed");
     }
 }
