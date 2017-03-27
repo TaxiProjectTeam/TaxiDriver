@@ -14,7 +14,18 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
-        android:transitionName="actionBar" />
+        android:transitionName="actionBar" >
+
+        <ProgressBar
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="4dp"
+            android:id="@+id/toolbox_progress_bar"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            />
+
+        </android.support.v7.widget.Toolbar>
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"

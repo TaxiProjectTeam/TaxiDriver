@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.ck.taxoteam.taxodriver.R;
 import com.ck.taxoteam.taxodriver.data.CurrentDriver;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     private FirebaseDatabase database;
     private Location currLocation;
     private List<OnDataReadyListener> onDataReadyListeners;
+    private ProgressBar toolboxProgressBar;
+    private Thread getDataThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +106,9 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
                     .build();
         }
 
-        ref.child("orders").addValueEventListener(this);
+        //Toolbox progress bar
+        toolboxProgressBar = (ProgressBar) findViewById(R.id.toolbox_progress_bar);
+
     }
 
     @Override
@@ -196,9 +201,14 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     public void onDataChange(DataSnapshot dataSnapshot) {
         final DataSnapshot snapshot = dataSnapshot;
         final Context activityContext = this;
+
+        if(!(freeOrders.isEmpty() && myOrders.isEmpty())){
+            toolboxProgressBar.setVisibility(View.VISIBLE);
+        }
         freeOrders.clear();
         myOrders.clear();
-        Thread thread = new Thread(new Runnable() {
+        //Sort (minimal distance)
+        getDataThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 for (DataSnapshot data : snapshot.getChildren()) {
@@ -233,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
                             listener.onDataReady(myOrders, ORDER_TYPE_MY);
                         }
 
+                        toolboxProgressBar.setVisibility(View.INVISIBLE);
 
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_fragments_container, new OrdersListFragment()).commit();
@@ -241,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
                 });
             }
         });
-        thread.start();
+        getDataThread.start();
     }
 
     @Override
@@ -298,6 +309,18 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
 
     }
 
+    @Override
+    public void onResume(){
+        ref.child("orders").addValueEventListener(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        ref.child("orders").removeEventListener(this);
+        super.onPause();
+    }
+
     public void registerOnDataReadyListener(OnDataReadyListener listener) {
         onDataReadyListeners.add(listener);
     }
@@ -310,14 +333,11 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         return myOrders;
     }
 
-    @Override
-    protected void onDestroy() {
-        ref.child("orders").removeEventListener(this);
-        super.onDestroy();
-    }
+
 
     public interface OnDataReadyListener {
         void onDataReady(List<Order> data, boolean orderType);
     }
+
 }
 

@@ -343,14 +343,14 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         actionButton.setText(R.string.button_text_arrived);
-                        firebaseDatabase.child("orders").child(currentOrder.getId()).child("status").setValue("accepted");
                         currentOrder.setStatus("accepted");
 
                         //Write driver information to order
                         FirebaseAuth auth = FirebaseAuth.getInstance();
                         FirebaseUser currUser = auth.getCurrentUser();
-                        firebaseDatabase.child("orders").child(currentOrder.getId()).child("driverId").setValue(currUser.getUid());
                         currentOrder.setDriverId(currUser.getUid());
+
+                        firebaseDatabase.child("orders").child(currentOrder.getId()).setValue(currentOrder);
                         dialog.cancel();
                     }
                 })
