@@ -2,6 +2,7 @@ package com.ck.taxoteam.taxodriver.activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.ck.taxoteam.taxodriver.R;
 import com.ck.taxoteam.taxodriver.adapter.AddressListAdapter;
 import com.ck.taxoteam.taxodriver.data.Coords;
 import com.ck.taxoteam.taxodriver.data.Order;
+import com.ck.taxoteam.taxodriver.service.SendLocationService;
 import com.ck.taxoteam.taxodriver.tools.LocationConverter;
 import com.ck.taxoteam.taxodriver.tools.PermitionsHelper;
 import com.ck.taxoteam.taxodriver.tools.RouteApi;
@@ -79,6 +81,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
     private SupportMapFragment mapFragment;
     private int displayHeight;
     private DatabaseReference firebaseDatabase;
+    Intent serviceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +127,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
 
         //database
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+
+        //init service intent
+        serviceIntent = new Intent(this, SendLocationService.class);
     }
 
     private void showData(Order order) {
@@ -351,6 +357,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
                         currentOrder.setDriverId(currUser.getUid());
 
                         firebaseDatabase.child("orders").child(currentOrder.getId()).setValue(currentOrder);
+
+                        serviceIntent.putExtra("order", currentOrder);
+                        startService(serviceIntent);
                         dialog.cancel();
                     }
                 })
@@ -394,5 +403,6 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
                 }).show();
         actionButton.setVisibility(View.INVISIBLE);
         firebaseDatabase.child("orders").child(currentOrder.getId()).child("status").setValue("completed");
+        stopService(serviceIntent);
     }
 }

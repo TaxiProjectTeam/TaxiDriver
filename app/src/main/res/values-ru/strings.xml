@@ -41,4 +41,6 @@
     <string name="dialog_order_completed_message">Не забудьте рассчитаться с клиентом</string>
     <string name="ok_button">OK</string>
     <string name="toast_arrive_start_place">Ожидайте клиента</string>
+    <string name="notification_title">Принят заказ</string>
+    <string name="notification_text">Ваше местоположение отправляется клиенту</string>
 </resources>

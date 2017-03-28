@@ -45,5 +45,7 @@
     <string name="dialog_order_completed_message">Do not forget to pay the customer</string>
     <string name="ok_button">OK</string>
     <string name="toast_arrive_start_place">Expect client</string>
+    <string name="notification_title">The decision orders</string>
+    <string name="notification_text">Your location is sent to the client</string>
 
 </resources>
