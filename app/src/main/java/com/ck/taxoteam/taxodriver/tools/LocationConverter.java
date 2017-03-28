@@ -20,8 +20,11 @@ public class LocationConverter {
             List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
             if (addresses != null) {
                 Address returnedAddress = addresses.get(0);
-                strAdd = returnedAddress.getThoroughfare() + ", " + returnedAddress.getSubThoroughfare();
-            } else {
+                if (returnedAddress.getSubThoroughfare() == null) {
+                    strAdd = returnedAddress.getThoroughfare();
+                } else {
+                    strAdd = returnedAddress.getThoroughfare() + ", " + returnedAddress.getSubThoroughfare();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

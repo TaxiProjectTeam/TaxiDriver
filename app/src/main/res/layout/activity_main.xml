@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
-    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:openDrawer="start">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -14,21 +15,23 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
-        android:transitionName="actionBar" >
+        android:transitionName="actionBar">
 
-        <ProgressBar
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="4dp"
-            android:id="@+id/toolbox_progress_bar"
-            android:visibility="invisible"
-            tools:visibility="visible"
-            />
+    </android.support.v7.widget.Toolbar>
 
-        </android.support.v7.widget.Toolbar>
-    <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:layout_marginBottom="-8dp"
+        android:layout_marginTop="-7dp"
+        />
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/main_fragments_container"
-        android:layout_height="match_parent"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </FrameLayout>
 </LinearLayout>

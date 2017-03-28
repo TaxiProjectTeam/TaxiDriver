@@ -11,6 +11,7 @@
         android:clickable="true"
         android:focusable="true"
         android:scrollbars="vertical"
+        android:background="?android:attr/selectableItemBackground"
 
         />
 </FrameLayout>

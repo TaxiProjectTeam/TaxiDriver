@@ -19,10 +19,6 @@ public class OrdersListFragment extends Fragment implements TabLayout.OnTabSelec
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,4 +57,8 @@ public class OrdersListFragment extends Fragment implements TabLayout.OnTabSelec
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }

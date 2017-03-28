@@ -3,6 +3,7 @@ package com.ck.taxoteam.taxodriver.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -49,6 +50,12 @@ public class MyOrdersFragment extends Fragment implements OrderListAdapter.ItemC
         //Register listener
         ((MainActivity) getActivity()).registerOnDataReadyListener(this);
 
+        //Restore layout manager (for save scroll position)
+        if(savedInstanceState != null){
+            Parcelable state = savedInstanceState.getParcelable("layoutManager");
+            layoutManager.onRestoreInstanceState(state);
+        }
+
         return rootView;
     }
 
@@ -80,5 +87,10 @@ public class MyOrdersFragment extends Fragment implements OrderListAdapter.ItemC
             listAdapter.notifyDataSetChanged();
 
         }
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("layoutManager", layoutManager.onSaveInstanceState());
+        super.onSaveInstanceState(outState);
     }
 }

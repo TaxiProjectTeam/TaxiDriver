@@ -3,7 +3,9 @@ package com.ck.taxoteam.taxodriver.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +22,6 @@ import com.ck.taxoteam.taxodriver.data.Driver;
 import com.ck.taxoteam.taxodriver.data.Order;
 import com.ck.taxoteam.taxodriver.fragment.AboutProgramFragment;
 import com.ck.taxoteam.taxodriver.fragment.OrdersListFragment;
-import com.ck.taxoteam.taxodriver.fragment.ProgressFragment;
 import com.ck.taxoteam.taxodriver.fragment.UserInfoFragment;
 import com.ck.taxoteam.taxodriver.tools.LocationConverter;
 import com.ck.taxoteam.taxodriver.tools.PermitionsHelper;
@@ -48,7 +49,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements ValueEventListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     public static final boolean ORDER_TYPE_FREE = true;
     public static final boolean ORDER_TYPE_MY = false;
-    private static final int MY_PERMISSION_REQUEST_FINE_LOCATION = 13;
+
     GoogleApiClient client;
     private Toolbar toolbar;
     private List<Order> freeOrders;
@@ -58,9 +59,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     private FirebaseDatabase database;
     private Location currLocation;
     private List<OnDataReadyListener> onDataReadyListeners;
-    private ProgressBar toolboxProgressBar;
-    private Thread getDataThread;
-
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,9 +70,17 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         //Get info from firebase about current driver
         getCurrentUserInformation();
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.main_fragments_container, new ProgressFragment()).commit();
+        //Restore arrays
+        if(savedInstanceState != null){
+            freeOrders = savedInstanceState.getParcelableArrayList("allArray");
+            myOrders = savedInstanceState.getParcelableArrayList("myArray");
         }
+        else{
+            freeOrders = new ArrayList<Order>();
+            myOrders = new ArrayList<Order>();
+            getSupportFragmentManager().beginTransaction().add(R.id.main_fragments_container, new OrdersListFragment()).commit();
+        }
+
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,10 +88,6 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
 
         //Navigation Drawer
         attachNavigationDrawer();
-
-        //Data lists
-        freeOrders = new ArrayList<Order>();
-        myOrders = new ArrayList<Order>();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -107,8 +110,17 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         }
 
         //Toolbox progress bar
-        toolboxProgressBar = (ProgressBar) findViewById(R.id.toolbox_progress_bar);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        //database listener
+        ref.child("orders").addValueEventListener(this);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        client.connect();
     }
 
     @Override
@@ -199,60 +211,9 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     //get data from firebase
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-        final DataSnapshot snapshot = dataSnapshot;
-        final Context activityContext = this;
-
-        if(!(freeOrders.isEmpty() && myOrders.isEmpty())){
-            toolboxProgressBar.setVisibility(View.VISIBLE);
-        }
-        freeOrders.clear();
-        myOrders.clear();
-        //Sort (minimal distance)
-        getDataThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    Order order = data.getValue(Order.class);
-                    order.setId(data.getKey());
-                    order.setFromAddress(LocationConverter.getCompleteAddressString(activityContext,
-                            order.getFromCoords().getLatitude(),
-                            order.getFromCoords().getLongitude()));
-                    List<String> toAddress = new ArrayList<String>();
-                    for (int i = 0; i < order.getToCoords().size(); i++) {
-                        toAddress.add(LocationConverter.getCompleteAddressString(activityContext,
-                                order.getToCoords().get(i).getLatitude(),
-                                order.getToCoords().get(i).getLongitude()));
-                    }
-                    order.setToAdress(toAddress);
-                    if (order.getStatus().equals("free")) {
-                        freeOrders.add(order);
-                    } else if (order.getDriverId().equals(user.getUid())) {
-                        myOrders.add(order);
-                    }
-                }
-                //Sort (minimal distance)
-                sortOrders(freeOrders);
-                sortOrders(myOrders);
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Send messages to fragments
-                        for (OnDataReadyListener listener : onDataReadyListeners) {
-                            listener.onDataReady(freeOrders, ORDER_TYPE_FREE);
-                            listener.onDataReady(myOrders, ORDER_TYPE_MY);
-                        }
-
-                        toolboxProgressBar.setVisibility(View.INVISIBLE);
-
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.main_fragments_container, new OrdersListFragment()).commit();
-
-                    }
-                });
-            }
-        });
-        getDataThread.start();
+        ProcessingDataTask task = new ProcessingDataTask(this);
+        //Processing data async
+        task.execute(dataSnapshot);
     }
 
     @Override
@@ -260,11 +221,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        client.connect();
-    }
+
 
 
     private void sortOrders(List<Order> currOrders) {
@@ -310,16 +267,18 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     }
 
     @Override
-    public void onResume(){
-        ref.child("orders").addValueEventListener(this);
-        super.onResume();
+    protected void onDestroy() {
+
+        ref.child("orders").removeEventListener(this);
+        super.onDestroy();
     }
 
     @Override
-    protected void onPause() {
-        ref.child("orders").removeEventListener(this);
-        super.onPause();
-    }
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("allArray", (ArrayList<? extends Parcelable>) freeOrders);
+        outState.putParcelableArrayList("myArray", (ArrayList<? extends Parcelable>) myOrders);
+        super.onSaveInstanceState(outState);
+}
 
     public void registerOnDataReadyListener(OnDataReadyListener listener) {
         onDataReadyListeners.add(listener);
@@ -334,9 +293,65 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     }
 
 
-
     public interface OnDataReadyListener {
         void onDataReady(List<Order> data, boolean orderType);
+    }
+
+    private class ProcessingDataTask extends AsyncTask<DataSnapshot,Void,Void> {
+        private Context context;
+        private List<Order> tempFreeOrders;
+        private List<Order> tempMyOrders;
+
+        public ProcessingDataTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(DataSnapshot... params) {
+
+            tempFreeOrders = new ArrayList<Order>();
+            tempMyOrders = new ArrayList<Order>();
+            for (DataSnapshot data : params[0].getChildren()) {
+                Order order = data.getValue(Order.class);
+                order.setId(data.getKey());
+                order.setFromAddress(LocationConverter.getCompleteAddressString(context,
+                        order.getFromCoords().getLatitude(),
+                        order.getFromCoords().getLongitude()));
+                List<String> toAddress = new ArrayList<String>();
+                for (int i = 0; i < order.getToCoords().size(); i++) {
+                    toAddress.add(LocationConverter.getCompleteAddressString(context,
+                            order.getToCoords().get(i).getLatitude(),
+                            order.getToCoords().get(i).getLongitude()));
+                }
+                order.setToAdress(toAddress);
+                if (order.getStatus().equals("free")) {
+                    tempFreeOrders.add(order);
+                } else if (order.getDriverId().equals(user.getUid())) {
+                    tempMyOrders.add(order);
+                }
+            }
+            //Sort (minimal distance)
+            sortOrders(tempFreeOrders);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            //Send messages to fragments
+            for (OnDataReadyListener listener : onDataReadyListeners) {
+                freeOrders = tempFreeOrders;
+                myOrders = tempMyOrders;
+                listener.onDataReady(freeOrders, ORDER_TYPE_FREE);
+                listener.onDataReady(myOrders, ORDER_TYPE_MY);
+            }
+
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
 }

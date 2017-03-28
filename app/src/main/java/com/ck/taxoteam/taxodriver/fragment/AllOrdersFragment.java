@@ -2,6 +2,7 @@ package com.ck.taxoteam.taxodriver.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -51,19 +52,23 @@ public class AllOrdersFragment extends Fragment implements OrderListAdapter.Item
         //Register on data ready listener
         ((MainActivity) getActivity()).registerOnDataReadyListener(this);
 
-        return rootView;
-    }
-
-    @Override
-    public void onResume() {
         //Get order list
         currOrders = new ArrayList<Order>();
         currOrders.addAll(((MainActivity) getActivity()).getFreeOrders());
+
         //Adapter
         listAdapter = new OrderListAdapter(getActivity(), currOrders, this);
         listAdapter.setHasStableIds(true);
         orderRecyclerView.setAdapter(listAdapter);
-        super.onResume();
+
+        //Restore layout manager (for save scroll position)
+        if(null != savedInstanceState){
+            Parcelable state = savedInstanceState.getParcelable("layoutManager");
+            layoutManager.onRestoreInstanceState(state);
+        }
+
+
+        return rootView;
     }
 
     //On item click listener
@@ -81,5 +86,11 @@ public class AllOrdersFragment extends Fragment implements OrderListAdapter.Item
             currOrders.addAll(data);
             listAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("layoutManager", layoutManager.onSaveInstanceState());
+        super.onSaveInstanceState(outState);
     }
 }
