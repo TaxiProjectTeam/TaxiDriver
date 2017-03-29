@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +89,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
+
+        //set back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Get Extra
         Bundle data = getIntent().getExtras();
@@ -385,6 +390,23 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
                 break;
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                if(MainActivity.isActive()){
+                    finish();
+                }
+                else{
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void arrivedToStartPosition(){
         actionButton.setText(getResources().getString(R.string.button_text_completed));
         firebaseDatabase.child("orders").child(currentOrder.getId()).child("status").setValue("arrived");

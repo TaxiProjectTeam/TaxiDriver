@@ -24,7 +24,13 @@
         </activity>
         <activity
             android:name="com.ck.taxoteam.taxodriver.activity.OrderDetailsActivity"
-            android:theme="@style/MyThemeWithActionBar" />
+            android:theme="@style/MyThemeWithActionBar"
+            android:parentActivityName=".activity.MainActivity"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

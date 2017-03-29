@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     private Location currLocation;
     private List<OnDataReadyListener> onDataReadyListeners;
     private ProgressBar progressBar;
+
+    private static int activeInstances = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,11 +74,10 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         getCurrentUserInformation();
 
         //Restore arrays
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             freeOrders = savedInstanceState.getParcelableArrayList("allArray");
             myOrders = savedInstanceState.getParcelableArrayList("myArray");
-        }
-        else{
+        } else {
             freeOrders = new ArrayList<Order>();
             myOrders = new ArrayList<Order>();
             getSupportFragmentManager().beginTransaction().add(R.id.main_fragments_container, new OrdersListFragment()).commit();
@@ -115,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         //database listener
         ref.child("orders").addValueEventListener(this);
 
+        activeInstances++;
     }
 
     @Override
@@ -122,6 +125,8 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         super.onStart();
         client.connect();
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -222,8 +227,6 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     }
 
 
-
-
     private void sortOrders(List<Order> currOrders) {
         Collections.sort(currOrders, new Comparator<Order>() {
             @Override
@@ -270,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     protected void onDestroy() {
 
         ref.child("orders").removeEventListener(this);
+        activeInstances--;
         super.onDestroy();
     }
 
@@ -278,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         outState.putParcelableArrayList("allArray", (ArrayList<? extends Parcelable>) freeOrders);
         outState.putParcelableArrayList("myArray", (ArrayList<? extends Parcelable>) myOrders);
         super.onSaveInstanceState(outState);
-}
+    }
 
     public void registerOnDataReadyListener(OnDataReadyListener listener) {
         onDataReadyListeners.add(listener);
@@ -292,12 +296,15 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         return myOrders;
     }
 
+    static boolean isActive() {
+        return (activeInstances > 0);
+    }
 
     public interface OnDataReadyListener {
         void onDataReady(List<Order> data, boolean orderType);
     }
 
-    private class ProcessingDataTask extends AsyncTask<DataSnapshot,Void,Void> {
+    private class ProcessingDataTask extends AsyncTask<DataSnapshot, Void, Void> {
         private Context context;
         private List<Order> tempFreeOrders;
         private List<Order> tempMyOrders;
@@ -353,6 +360,5 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
             progressBar.setVisibility(View.GONE);
         }
     }
-
 }
 
