@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="login_hint">Імя користувача</string>
+    <string name="login_hint">Email</string>
     <string name="password_hint">Пароль</string>
     <string name="text_button_login">Увійти</string>
     <string name="all_orders_text">Доступні замовлення</string>
@@ -46,4 +46,5 @@
     <string name="status_free_text">Вільне</string>
     <string name="status_accepted_text">Прийняте</string>
     <string name="status_completed_text">Виконане</string>
+    <string name="login_dialog_message">Авторизація</string>
 </resources>

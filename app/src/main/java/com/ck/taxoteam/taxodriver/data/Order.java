@@ -4,6 +4,8 @@ package com.ck.taxoteam.taxodriver.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +83,7 @@ public class Order implements Parcelable {
         this.status = status;
     }
 
+    @Exclude
     public Coords getDriverPos() {
         return driverPos;
     }
@@ -120,6 +123,7 @@ public class Order implements Parcelable {
     public void setPrice(double price) {
         this.price = price;
     }
+
 
     public String getDriverId() {
         return driverId;

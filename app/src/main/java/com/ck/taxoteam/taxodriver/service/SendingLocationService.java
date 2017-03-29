@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.ck.taxoteam.taxodriver.R;
 import com.ck.taxoteam.taxodriver.activity.OrderDetailsActivity;
@@ -69,6 +70,7 @@ public class SendingLocationService extends Service implements GoogleApiClient.C
                             if(currLocation != null) {
                                 currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
                                 Coords currCoords = new Coords(currLocation.getLongitude(), currLocation.getLatitude());
+                                Log.i("Service","Sending");
                                 ref.child("orders").child(currOrder.getId()).child("driverPos").setValue(currCoords);
                             }
                             wait(6000);
@@ -94,7 +96,7 @@ public class SendingLocationService extends Service implements GoogleApiClient.C
         PendingIntent contentIntent = PendingIntent.getActivity(this,0,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setContentIntent(contentIntent);
-        builder.setSmallIcon(R.mipmap.icon_launcher);
+        builder.setSmallIcon(R.drawable.icon_launcher);
         builder.setContentTitle(getResources().getString(R.string.notification_title));
         builder.setContentText(getResources().getString(R.string.notification_text));
         builder.setAutoCancel(false);

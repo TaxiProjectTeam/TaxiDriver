@@ -1,13 +1,17 @@
 package com.ck.taxoteam.taxodriver.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ck.taxoteam.taxodriver.R;
@@ -28,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private Context context = this;
     private EditText emailEditText;
     private EditText passwordEditText;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,23 +60,21 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emailEditText.getText().toString();
-                String pass = passwordEditText.getText().toString();
-                if(!(email.equals("") || pass.equals(""))) {
-                    auth.signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(!task.isSuccessful()){
-                                Toast.makeText(context,getString(R.string.login_failed_text),Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
-                else{
-                    Toast.makeText(context, getString(R.string.login_email_password_empty),Toast.LENGTH_SHORT).show();
-                }
+                login();
             }
         });
+        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    login();
+                }
+                return false;
+            }
+        });
+        dialog = new ProgressDialog(this);
+        dialog.setCancelable(false);
+        dialog.setMessage(getResources().getString(R.string.login_dialog_message));
     }
 
     @Override
@@ -86,5 +89,36 @@ public class LoginActivity extends AppCompatActivity {
         if(stateListener != null){
             auth.removeAuthStateListener(stateListener);
         }
+    }
+    private void login(){
+        dialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+
+        String email = emailEditText.getText().toString();
+        String pass = passwordEditText.getText().toString();
+        if(!(email.equals("") || pass.equals(""))) {
+            auth.signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(!task.isSuccessful()){
+                        Toast.makeText(context,getString(R.string.login_failed_text),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+        else{
+            Toast.makeText(context, getString(R.string.login_email_password_empty),Toast.LENGTH_SHORT).show();
+        }
+            }
+        }).start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.dismiss();
     }
 }

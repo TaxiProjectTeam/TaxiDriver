@@ -32,11 +32,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <Button
+                style="@style/Base.Widget.AppCompat.Button.Colored"
                 android:id="@+id/details_button_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
+                android:textColor="@color/md_black_1000"
                 android:text="@string/button_text_accept" />
 
             <ImageView
