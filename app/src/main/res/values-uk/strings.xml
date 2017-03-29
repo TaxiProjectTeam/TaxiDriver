@@ -43,4 +43,7 @@
     <string name="toast_arrive_start_place">Очікуйте на клієнта</string>
     <string name="notification_title">Прийняте замовлення</string>
     <string name="notification_text">Ваше місцезнаходження відправляється клієнту</string>
+    <string name="status_free_text">Вільне</string>
+    <string name="status_accepted_text">Прийняте</string>
+    <string name="status_completed_text">Виконане</string>
 </resources>

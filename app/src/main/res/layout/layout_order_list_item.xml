@@ -73,6 +73,13 @@
             android:textSize="20sp"
             android:textStyle="bold"
             tools:text="300 грн." />
+        <TextView
+            android:id="@+id/listitem_status_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/listitem_price_textview"
+            android:textStyle="bold"
+            tools:text="Free"/>
 
     </RelativeLayout>
 

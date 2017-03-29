@@ -69,6 +69,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         TextView fromTextView;
         TextView toTextView;
         TextView stopCountTextView;
+        TextView statusTextView;
         Order order;
         TextView priceTextView;
 
@@ -79,6 +80,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
             toTextView = (TextView) itemView.findViewById(R.id.listitem_to_textview);
             stopCountTextView = (TextView) itemView.findViewById(R.id.listitem_stopcount_textview);
             priceTextView = (TextView) itemView.findViewById(R.id.listitem_price_textview);
+            statusTextView = (TextView) itemView.findViewById(R.id.listitem_status_textview);
             this.clickListener = clickListener;
             itemView.setOnClickListener(this);
         }
@@ -88,6 +90,20 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
             stopCountTextView.setText(String.valueOf(order.getToCoords().size() - 1));
             priceTextView.setText(Double.toString(order.getPrice()) + " " + context.getResources().getString(R.string.currency_uah));
             fromTextView.setText(order.getFromAddress());
+            switch (order.getStatus()){
+                case "free":
+                    statusTextView.setText(context.getResources().getString(R.string.status_free_text));
+                    break;
+                case "accepted":
+                    statusTextView.setText(context.getResources().getString(R.string.status_accepted_text));
+                    break;
+                case "arrived":
+                    statusTextView.setText(context.getResources().getString(R.string.status_accepted_text));
+                    break;
+                case "completed":
+                    statusTextView.setText(context.getResources().getString(R.string.status_completed_text));
+                    break;
+            }
             String toAddress = "";
             if (order.getToAdress().size() != 0) {
                 toAddress = order.getToAdress().get(order.getToAdress().size() - 1);

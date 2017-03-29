@@ -47,5 +47,8 @@
     <string name="toast_arrive_start_place">Expect client</string>
     <string name="notification_title">The decision orders</string>
     <string name="notification_text">Your location is sent to the client</string>
+    <string name="status_free_text">Free</string>
+    <string name="status_accepted_text">Accepted</string>
+    <string name="status_completed_text">Completed</string>
 
 </resources>
