@@ -28,7 +28,7 @@ import com.ck.taxoteam.taxodriver.R;
 import com.ck.taxoteam.taxodriver.adapter.AddressListAdapter;
 import com.ck.taxoteam.taxodriver.data.Coords;
 import com.ck.taxoteam.taxodriver.data.Order;
-import com.ck.taxoteam.taxodriver.service.SendLocationService;
+import com.ck.taxoteam.taxodriver.service.SendingLocationService;
 import com.ck.taxoteam.taxodriver.tools.LocationConverter;
 import com.ck.taxoteam.taxodriver.tools.PermitionsHelper;
 import com.ck.taxoteam.taxodriver.tools.RouteApi;
@@ -129,7 +129,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
 
         //init service intent
-        serviceIntent = new Intent(this, SendLocationService.class);
+        serviceIntent = new Intent(this, SendingLocationService.class);
     }
 
     private void showData(Order order) {
@@ -357,7 +357,6 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
                         currentOrder.setDriverId(currUser.getUid());
 
                         firebaseDatabase.child("orders").child(currentOrder.getId()).setValue(currentOrder);
-
                         serviceIntent.putExtra("order", currentOrder);
                         startService(serviceIntent);
                         dialog.cancel();

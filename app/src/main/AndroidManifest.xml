@@ -8,7 +8,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/MyThemeWithoutActionBar">
-        <service android:name=".service.SendLocationService"/>
+        <service android:name=".service.SendingLocationService"
+            android:enabled="true"
+            android:exported="false"
+            />
         <activity android:name="com.ck.taxoteam.taxodriver.activity.MainActivity" />
         <activity
             android:name="com.ck.taxoteam.taxodriver.activity.LoginActivity"
