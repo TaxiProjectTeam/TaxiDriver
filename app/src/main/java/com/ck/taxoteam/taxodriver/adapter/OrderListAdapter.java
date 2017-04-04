@@ -88,7 +88,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         void bind(Order order) {
             this.order = order;
             stopCountTextView.setText(String.valueOf(order.getToCoords().size() - 1));
-            priceTextView.setText(Double.toString(order.getPrice()) + " " + context.getResources().getString(R.string.currency_uah));
+            priceTextView.setText(order.getPrice() + " " + context.getResources().getString(R.string.currency_uah));
             fromTextView.setText(order.getFromAddress());
             switch (order.getStatus()){
                 case "free":

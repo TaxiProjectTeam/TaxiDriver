@@ -30,7 +30,7 @@ public class Order implements Parcelable {
     private Coords fromCoords;
     private Coords driverPos;
     private ArrayList<Coords> toCoords;
-    private double price;
+    private String price;
     private String driverId;
     private String status;
 
@@ -42,7 +42,7 @@ public class Order implements Parcelable {
     public Order() {
     }
 
-    public Order(String id, String additionalComment, Coords fromCoords, Coords driverPos, ArrayList<Coords> toCoords, double price, String driverId, String status, int time) {
+    public Order(String id, String additionalComment, Coords fromCoords, Coords driverPos, ArrayList<Coords> toCoords, String price, String driverId, String status, int time) {
         this.id = id;
         this.additionalComment = additionalComment;
         this.fromCoords = fromCoords;
@@ -61,7 +61,7 @@ public class Order implements Parcelable {
         this.driverPos = in.readParcelable(Coords.class.getClassLoader());
         this.toCoords = new ArrayList<Coords>();
         in.readList(this.toCoords, Coords.class.getClassLoader());
-        this.price = in.readDouble();
+        this.price = in.readString();
         this.driverId = in.readString();
         this.status = in.readString();
         this.time = in.readInt();
@@ -116,11 +116,11 @@ public class Order implements Parcelable {
         this.additionalComment = additionalComment;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -169,7 +169,7 @@ public class Order implements Parcelable {
         dest.writeParcelable(this.fromCoords, flags);
         dest.writeParcelable(this.driverPos, flags);
         dest.writeList(this.toCoords);
-        dest.writeDouble(this.price);
+        dest.writeString(this.price);
         dest.writeString(this.driverId);
         dest.writeString(this.status);
         dest.writeInt(this.time);
