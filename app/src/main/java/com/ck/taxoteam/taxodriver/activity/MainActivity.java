@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     }
 
 
-    private void sortOrders(List<Order> currOrders) {
+    private void sortOrdersByDistance(List<Order> currOrders) {
         Collections.sort(currOrders, new Comparator<Order>() {
             @Override
             public int compare(Order o1, Order o2) {
@@ -250,6 +250,17 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
                 }
             }
         });
+    }
+    private void sortOrdersByStatus(List<Order> currOrders){
+        for (int i = currOrders.size() - 1; i >= 0; i--) {
+            for (int j = 0; j < i; j++) {
+                if (currOrders.get(j).getStatus().equals("completed") && (currOrders.get(j+1).getStatus().equals("accepted") || currOrders.get(j+1).getStatus().equals("arrived"))) {
+                    Order t = currOrders.get(j);
+                    currOrders.set(j,currOrders.get(j+1));
+                    currOrders.set(j+1,t);
+                }
+            }
+        }
     }
 
     @Override
@@ -342,8 +353,9 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
                     tempMyOrders.add(order);
                 }
             }
-            //Sort (minimal distance)
-            sortOrders(tempFreeOrders);
+
+            sortOrdersByDistance(tempFreeOrders);
+            sortOrdersByStatus(tempMyOrders);
             return null;
         }
 
