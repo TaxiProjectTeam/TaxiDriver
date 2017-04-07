@@ -3,11 +3,14 @@ package com.ck.taxoteam.taxodriver.activity;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
@@ -30,6 +33,7 @@ import com.ck.taxoteam.taxodriver.R;
 import com.ck.taxoteam.taxodriver.adapter.AddressListAdapter;
 import com.ck.taxoteam.taxodriver.data.Coords;
 import com.ck.taxoteam.taxodriver.data.Order;
+import com.ck.taxoteam.taxodriver.receiver.NetworkStateReceiver;
 import com.ck.taxoteam.taxodriver.service.SendingLocationService;
 import com.ck.taxoteam.taxodriver.tools.LocationConverter;
 import com.ck.taxoteam.taxodriver.tools.PermitionsHelper;
@@ -65,7 +69,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OrderDetailsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnTouchListener, View.OnClickListener {
+public class OrderDetailsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnTouchListener, View.OnClickListener, NetworkStateReceiver.NetworkStateReceiverListener {
 
 
 
@@ -79,17 +83,22 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
     private LinearLayout linearLayoutInformation;
     private float lastTouchPosition;
     private float dpScale;
-    ViewGroup.LayoutParams mapParams;
+    private ViewGroup.LayoutParams mapParams;
     private SupportMapFragment mapFragment;
     private int displayHeight;
     private DatabaseReference firebaseDatabase;
-    Intent serviceIntent;
+    private Intent serviceIntent;
     private LatLng currCoords;
+    private NetworkStateReceiver networkStateReceiver;
+    private Snackbar networkStateSnackbar;
+    private LinearLayout parent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
+
+        parent = (LinearLayout) findViewById(R.id.details_activity_parent);
 
         //set back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -136,6 +145,18 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
 
         //init service intent
         serviceIntent = new Intent(this, SendingLocationService.class);
+
+        //Network state listener
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        networkStateSnackbar = Snackbar.make(parent, getResources().getString(R.string.network_down_snackbar_text),Snackbar.LENGTH_INDEFINITE);
+        networkStateSnackbar.setAction(getResources().getText(R.string.action_open_wifi), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+            }
+        });
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     private void showData(Order order) {
@@ -432,4 +453,17 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         firebaseDatabase.child("orders").child(currentOrder.getId()).child("status").setValue("completed");
         stopService(serviceIntent);
     }
+
+    @Override
+    public void networkAvailable() {
+        if(networkStateSnackbar.isShown()) {
+            networkStateSnackbar.dismiss();
+        }
+    }
+
+    @Override
+    public void networkUnavailable() {
+        networkStateSnackbar.show();
+    }
+
 }

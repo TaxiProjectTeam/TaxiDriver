@@ -51,5 +51,7 @@
     <string name="status_accepted_text">Accepted</string>
     <string name="status_completed_text">Completed</string>
     <string name="login_dialog_message">Authorisation...</string>
+    <string name="network_down_snackbar_text">No Internet connection</string>
+    <string name="action_open_wifi">Wi-Fi settings</string>
 
 </resources>

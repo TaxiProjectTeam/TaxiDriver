@@ -2,18 +2,22 @@ package com.ck.taxoteam.taxodriver.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.ck.taxoteam.taxodriver.R;
@@ -23,6 +27,7 @@ import com.ck.taxoteam.taxodriver.data.Order;
 import com.ck.taxoteam.taxodriver.fragment.AboutProgramFragment;
 import com.ck.taxoteam.taxodriver.fragment.OrdersListFragment;
 import com.ck.taxoteam.taxodriver.fragment.UserInfoFragment;
+import com.ck.taxoteam.taxodriver.receiver.NetworkStateReceiver;
 import com.ck.taxoteam.taxodriver.tools.LocationConverter;
 import com.ck.taxoteam.taxodriver.tools.PermitionsHelper;
 import com.google.android.gms.common.ConnectionResult;
@@ -46,7 +51,7 @@ import java.util.Comparator;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements ValueEventListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity implements ValueEventListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, NetworkStateReceiver.NetworkStateReceiverListener{
     public static final boolean ORDER_TYPE_FREE = true;
     public static final boolean ORDER_TYPE_MY = false;
 
@@ -60,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     private Location currLocation;
     private List<OnDataReadyListener> onDataReadyListeners;
     private ProgressBar progressBar;
+    private NetworkStateReceiver networkStateReceiver;
+    private Snackbar networkStateSnackbar;
+    private FrameLayout mainView;
 
     private static int activeInstances = 0;
 
@@ -83,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
             getSupportFragmentManager().beginTransaction().add(R.id.main_fragments_container, new OrdersListFragment()).commit();
         }
 
+        mainView = (FrameLayout) findViewById(R.id.main_fragments_container);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -118,6 +127,18 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
         ref.child("orders").addValueEventListener(this);
 
         activeInstances++;
+
+        //Network state listener
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        networkStateSnackbar = Snackbar.make(mainView, getResources().getString(R.string.network_down_snackbar_text),Snackbar.LENGTH_INDEFINITE);
+        networkStateSnackbar.setAction(getResources().getText(R.string.action_open_wifi), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+            }
+        });
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
@@ -285,6 +306,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
 
         ref.child("orders").removeEventListener(this);
         activeInstances--;
+        this.unregisterReceiver(networkStateReceiver);
         super.onDestroy();
     }
 
@@ -309,6 +331,18 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
 
     static boolean isActive() {
         return (activeInstances > 0);
+    }
+
+    @Override
+    public void networkAvailable() {
+        if(networkStateSnackbar.isShown()) {
+            networkStateSnackbar.dismiss();
+        }
+    }
+
+    @Override
+    public void networkUnavailable() {
+        networkStateSnackbar.show();
     }
 
     public interface OnDataReadyListener {

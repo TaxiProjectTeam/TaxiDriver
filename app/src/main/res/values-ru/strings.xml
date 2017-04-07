@@ -47,4 +47,6 @@
     <string name="status_accepted_text">Принят</string>
     <string name="status_completed_text">Выполнен</string>
     <string name="login_dialog_message">Авторизация</string>
+    <string name="network_down_snackbar_text">Нет соединения с интернетом</string>
+    <string name="action_open_wifi">Настройки Wi-Fi</string>
 </resources>
