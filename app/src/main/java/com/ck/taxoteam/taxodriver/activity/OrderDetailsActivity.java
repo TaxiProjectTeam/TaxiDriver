@@ -283,10 +283,12 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         Location currLocation;
         if (PermitionsHelper.checkLocationPermitions(this)) {
             currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
-            currCoords = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
-            LatLng toCoords = new LatLng(currentOrder.getFromCoords().getLatitude(),
-                    currentOrder.getFromCoords().getLongitude());
-            getRouteResponse(currCoords, toCoords, R.color.color_route_from_me_to_start_points);
+            if(currLocation != null) {
+                currCoords = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
+                LatLng toCoords = new LatLng(currentOrder.getFromCoords().getLatitude(),
+                        currentOrder.getFromCoords().getLongitude());
+                getRouteResponse(currCoords, toCoords, R.color.color_route_from_me_to_start_points);
+            }
         }
     }
 
@@ -361,7 +363,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
                         FirebaseAuth auth = FirebaseAuth.getInstance();
                         FirebaseUser currUser = auth.getCurrentUser();
                         currentOrder.setDriverId(currUser.getUid());
-                        currentOrder.setDriverPos(new Coords(currCoords.longitude,currCoords.latitude));
+                        if(currCoords!=null) {
+                            currentOrder.setDriverPos(new Coords(currCoords.longitude, currCoords.latitude));
+                        }
 
                         firebaseDatabase.child("orders").child(currentOrder.getId()).setValue(currentOrder);
                         serviceIntent.putExtra("order", currentOrder);
