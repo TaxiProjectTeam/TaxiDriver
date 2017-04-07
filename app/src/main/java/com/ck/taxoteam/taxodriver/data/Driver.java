@@ -12,14 +12,16 @@ public class Driver {
     private String phoneNumber;
     private String carModel;
     private String carNumber;
+    private String carColor;
 
     public Driver(){}
 
-    public Driver(String name, String phoneNumber, String carModel, String carNumber) {
+    public Driver(String name, String phoneNumber, String carModel, String carNumber, String carColor) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.carModel = carModel;
         this.carNumber = carNumber;
+        this.carColor = carColor;
     }
 
     public String getName() {
@@ -52,5 +54,13 @@ public class Driver {
 
     public void setCarNumber(String carNumber) {
         this.carNumber = carNumber;
+    }
+
+    public String getCarColor() {
+        return carColor;
+    }
+
+    public void setCarColor(String carColor) {
+        this.carColor = carColor;
     }
 }

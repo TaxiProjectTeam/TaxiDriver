@@ -23,6 +23,7 @@ public class UserInfoFragment extends Fragment {
     TextView phoneTextView;
     TextView carModelTextView;
     TextView carNumberTextView;
+    TextView carColorTextView;
 
     @Nullable
     @Override
@@ -32,6 +33,7 @@ public class UserInfoFragment extends Fragment {
         phoneTextView = (TextView) rootVeiw.findViewById(R.id.text_driver_info_phone);
         carModelTextView = (TextView) rootVeiw.findViewById(R.id.text_driver_car_model);
         carNumberTextView = (TextView) rootVeiw.findViewById(R.id.text_driver_car_number);
+        carColorTextView = (TextView) rootVeiw.findViewById(R.id.text_driver_car_color);
 
         return rootVeiw;
 
@@ -45,5 +47,6 @@ public class UserInfoFragment extends Fragment {
         phoneTextView.setText(driver.getPhoneNumber());
         carModelTextView.setText(driver.getCarModel());
         carNumberTextView.setText(driver.getCarNumber());
+        carColorTextView.setText(driver.getCarColor());
     }
 }
