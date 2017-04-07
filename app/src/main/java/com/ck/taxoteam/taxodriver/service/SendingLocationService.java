@@ -70,7 +70,6 @@ public class SendingLocationService extends Service implements GoogleApiClient.C
                             if(currLocation != null) {
                                 currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
                                 Coords currCoords = new Coords(currLocation.getLongitude(), currLocation.getLatitude());
-                                Log.i("Service","Sending");
                                 ref.child("orders").child(currOrder.getId()).child("driverPos").setValue(currCoords);
                             }
                             wait(6000);

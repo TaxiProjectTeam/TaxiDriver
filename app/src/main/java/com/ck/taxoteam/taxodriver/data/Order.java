@@ -112,6 +112,8 @@ public class Order implements Parcelable {
         return additionalComment;
     }
 
+
+
     public void setAdditionalComment(String additionalComment) {
         this.additionalComment = additionalComment;
     }

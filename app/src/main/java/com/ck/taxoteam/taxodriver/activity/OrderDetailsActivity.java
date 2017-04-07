@@ -84,6 +84,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
     private int displayHeight;
     private DatabaseReference firebaseDatabase;
     Intent serviceIntent;
+    private LatLng currCoords;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -282,7 +283,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         Location currLocation;
         if (PermitionsHelper.checkLocationPermitions(this)) {
             currLocation = LocationServices.FusedLocationApi.getLastLocation(client);
-            LatLng currCoords = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
+            currCoords = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
             LatLng toCoords = new LatLng(currentOrder.getFromCoords().getLatitude(),
                     currentOrder.getFromCoords().getLongitude());
             getRouteResponse(currCoords, toCoords, R.color.color_route_from_me_to_start_points);
@@ -360,6 +361,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
                         FirebaseAuth auth = FirebaseAuth.getInstance();
                         FirebaseUser currUser = auth.getCurrentUser();
                         currentOrder.setDriverId(currUser.getUid());
+                        currentOrder.setDriverPos(new Coords(currCoords.longitude,currCoords.latitude));
 
                         firebaseDatabase.child("orders").child(currentOrder.getId()).setValue(currentOrder);
                         serviceIntent.putExtra("order", currentOrder);

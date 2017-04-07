@@ -100,7 +100,8 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString();
         String pass = passwordEditText.getText().toString();
         if(!(email.equals("") || pass.equals(""))) {
-            auth.signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            auth.signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.
+                    getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(!task.isSuccessful()){
