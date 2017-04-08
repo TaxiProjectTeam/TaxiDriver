@@ -104,9 +104,15 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Get Extra
-        Bundle data = getIntent().getExtras();
-        currentOrder = data.getParcelable("order");
-        showData(currentOrder);
+        if(savedInstanceState == null) {
+            Bundle data = getIntent().getExtras();
+            currentOrder = data.getParcelable("order");
+            showData(currentOrder);
+        }
+        else{
+            currentOrder = savedInstanceState.getParcelable("order");
+            showData(currentOrder);
+        }
 
         //Relative layout
         linearLayoutInformation = (LinearLayout) findViewById(R.id.detailsactivity_relative_information);
@@ -466,4 +472,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         networkStateSnackbar.show();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("order", currentOrder);
+        super.onSaveInstanceState(outState);
+    }
 }
