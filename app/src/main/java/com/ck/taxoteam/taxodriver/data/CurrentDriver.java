@@ -1,8 +1,6 @@
 package com.ck.taxoteam.taxodriver.data;
 
-/**
- * Created by bohdan on 30.01.17.
- */
+
 
 public class CurrentDriver {
     private static Driver instance;

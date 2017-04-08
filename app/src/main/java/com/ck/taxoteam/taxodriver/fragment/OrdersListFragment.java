@@ -56,9 +56,4 @@ public class OrdersListFragment extends Fragment implements TabLayout.OnTabSelec
     public void onTabReselected(TabLayout.Tab tab) {
 
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
 }

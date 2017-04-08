@@ -12,9 +12,7 @@ import com.ck.taxoteam.taxodriver.data.Order;
 
 import java.util.List;
 
-/**
- * Created by bohdan on 07.02.17.
- */
+
 
 public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.OrdersViewHolder> {
 

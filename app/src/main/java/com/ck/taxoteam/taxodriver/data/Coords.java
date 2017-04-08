@@ -3,9 +3,7 @@ package com.ck.taxoteam.taxodriver.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by bohdan on 06.02.17.
- */
+
 
 public class Coords implements Parcelable {
 

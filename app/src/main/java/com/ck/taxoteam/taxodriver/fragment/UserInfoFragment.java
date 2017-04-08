@@ -13,9 +13,6 @@ import com.ck.taxoteam.taxodriver.R;
 import com.ck.taxoteam.taxodriver.data.CurrentDriver;
 import com.ck.taxoteam.taxodriver.data.Driver;
 
-/**
- * Created by bohdan on 24.01.17.
- */
 
 public class UserInfoFragment extends Fragment {
 

@@ -2,9 +2,7 @@ package com.ck.taxoteam.taxodriver.tools;
 
 import java.util.List;
 
-/**
- * Created by bogdan on 10.03.17.
- */
+
 
 public class RouteResponse {
     public List<Route> routes;

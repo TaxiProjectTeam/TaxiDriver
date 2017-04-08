@@ -10,9 +10,6 @@ import android.view.ViewGroup;
 
 import com.ck.taxoteam.taxodriver.R;
 
-/**
- * Created by bohdan on 24.01.17.
- */
 
 public class AboutProgramFragment extends Fragment {
     @Nullable

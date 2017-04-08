@@ -149,10 +149,6 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
 
 
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -197,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements ValueEventListene
     }
 
     private void attachNavigationDrawer() {
-        final Drawer drawer = new DrawerBuilder()
+        new DrawerBuilder()
                 .withActivity(this)
                 .withDrawerWidthDp(320)
                 .withToolbar(toolbar)

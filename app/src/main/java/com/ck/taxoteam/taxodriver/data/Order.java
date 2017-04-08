@@ -9,9 +9,7 @@ import com.google.firebase.database.Exclude;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Sveta on 04.01.2017.
- */
+
 
 public class Order implements Parcelable {
     public static final Parcelable.Creator<Order> CREATOR = new Parcelable.Creator<Order>() {

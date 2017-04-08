@@ -5,9 +5,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 
-/**
- * Created by bogdan on 22.03.17.
- */
+
 
 public class PermitionsHelper {
     private static final int MY_PERMISSION_REQUEST_FINE_LOCATION = 13;

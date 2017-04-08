@@ -7,9 +7,6 @@ import android.location.Geocoder;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by bogdan on 16.02.17.
- */
 
 public class LocationConverter {
 

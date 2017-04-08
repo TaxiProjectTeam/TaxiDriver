@@ -9,9 +9,7 @@ import com.ck.taxoteam.taxodriver.R;
 import com.ck.taxoteam.taxodriver.fragment.AllOrdersFragment;
 import com.ck.taxoteam.taxodriver.fragment.MyOrdersFragment;
 
-/**
- * Created by bohdan on 24.01.17.
- */
+
 
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
 

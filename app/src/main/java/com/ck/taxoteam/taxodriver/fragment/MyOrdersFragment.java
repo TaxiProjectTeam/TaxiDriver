@@ -22,9 +22,6 @@ import com.ck.taxoteam.taxodriver.data.Order;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by bohdan on 24.01.17.
- */
 
 public class MyOrdersFragment extends Fragment implements OrderListAdapter.ItemClickListener, MainActivity.OnDataReadyListener {
     public static final boolean ORDER_TYPE_MY = false;

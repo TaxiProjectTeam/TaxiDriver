@@ -1,19 +1,16 @@
 package com.ck.taxoteam.taxodriver.service;
 
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.ck.taxoteam.taxodriver.R;
 import com.ck.taxoteam.taxodriver.activity.OrderDetailsActivity;

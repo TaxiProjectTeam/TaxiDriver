@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -107,12 +106,12 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         if(savedInstanceState == null) {
             Bundle data = getIntent().getExtras();
             currentOrder = data.getParcelable("order");
-            showData(currentOrder);
         }
         else{
             currentOrder = savedInstanceState.getParcelable("order");
-            showData(currentOrder);
         }
+
+        showData(currentOrder);
 
         //Relative layout
         linearLayoutInformation = (LinearLayout) findViewById(R.id.detailsactivity_relative_information);
@@ -202,8 +201,14 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         //Markers
         IconGenerator iconFactory = new IconGenerator(this);
         iconFactory.setTextAppearance(R.style.markers_text_style);
-        String fromAddress = LocationConverter.getCompleteAddressString(this, currentOrder.getFromCoords().getLatitude(), currentOrder.getFromCoords().getLongitude());
-
+        String fromAddress;
+        if(currentOrder.getFromAddress().equals("")) {
+            fromAddress = LocationConverter.getCompleteAddressString(this, currentOrder.getFromCoords().getLatitude(), currentOrder.getFromCoords().getLongitude());
+            currentOrder.setFromAddress(fromAddress);
+        }
+        else {
+            fromAddress = currentOrder.getFromAddress();
+        }
         iconFactory.setColor(ContextCompat.getColor(this, R.color.markers_green_backgrount));
         map.addMarker(new MarkerOptions().position(new LatLng(currentOrder.getFromCoords().getLatitude(), currentOrder.getFromCoords().getLongitude())).icon(
                 BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(getResources().getString(R.string.markers_start_label)))).
@@ -240,7 +245,6 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         routeCameraChanger = new LatLngBounds.Builder();
 
 
-        List<LatLng> allPoints = new ArrayList<LatLng>();
         LatLng fromPoint = new LatLng(currentOrder.getFromCoords().getLatitude(),
                 currentOrder.getFromCoords().getLongitude());
 

@@ -6,4 +6,4 @@
     android:orientation="vertical"
     android:scaleType="fitCenter"
     android:background="@color/colorPrimary"
-    android:src="@drawable/image"></ImageView>
+    android:src="@drawable/image"/>

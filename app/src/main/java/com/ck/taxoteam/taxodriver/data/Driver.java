@@ -2,9 +2,7 @@ package com.ck.taxoteam.taxodriver.data;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
-/**
- * Created by bohdan on 29.01.17.
- */
+
 @IgnoreExtraProperties
 public class Driver {
 

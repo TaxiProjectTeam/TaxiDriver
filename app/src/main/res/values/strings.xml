@@ -19,7 +19,7 @@
     <string name="listitem_labels_from">"From: "</string>
     <string name="listitem_labels_price">"Price: "</string>
     <string name="listitem_labels_to">"To: "</string>
-    <string name="maps_api_key">AIzaSyBAAYhzmC0BPCO4PQC0sMZu2EeGdkvGYrA</string>
+    <string name="maps_api_key" translatable="false">AIzaSyBAAYhzmC0BPCO4PQC0sMZu2EeGdkvGYrA</string>
     <string name="label_from_points">List endpoints:</string>
     <string name="button_text_accept">Accept</string>
     <string name="button_text_navigation">navigation</string>
@@ -33,7 +33,7 @@
     <string name="progress_sorting">Orders sorting...</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="accept_dialog_title">Confirmation</string>
     <string name="accept_dialog_question">Are you sure you want to confirm this order?</string>
     <string name="accept_dialog_positive_button_text">Yes</string>

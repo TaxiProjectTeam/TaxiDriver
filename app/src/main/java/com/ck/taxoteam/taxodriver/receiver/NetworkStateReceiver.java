@@ -9,9 +9,6 @@ import android.net.NetworkInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by bogda on 07.04.2017.
- */
 
 public class NetworkStateReceiver extends BroadcastReceiver {
 
@@ -50,7 +47,7 @@ public class NetworkStateReceiver extends BroadcastReceiver {
         if(connected == null || listener == null)
             return;
 
-        if(connected == true)
+        if(connected)
             listener.networkAvailable();
         else
             listener.networkUnavailable();

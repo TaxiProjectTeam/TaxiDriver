@@ -13,9 +13,7 @@ import com.ck.taxoteam.taxodriver.tools.LocationConverter;
 
 import java.util.ArrayList;
 
-/**
- * Created by bogdan on 17.02.17.
- */
+
 
 public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.AddressViewHolder> {
 
