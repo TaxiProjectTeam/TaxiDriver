@@ -501,5 +501,5 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         outState.putParcelable("order", currentOrder);
         super.onSaveInstanceState(outState);
     }
-    
+
 }
