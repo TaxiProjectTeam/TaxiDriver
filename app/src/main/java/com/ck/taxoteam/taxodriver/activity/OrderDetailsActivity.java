@@ -169,8 +169,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         firebaseDatabase.child("orders").child(currentOrder.getId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                String oldStatus = currentOrder.getStatus();
                 currentOrder = dataSnapshot.getValue(Order.class);
-                if (!(currentOrder.getStatus().equals("free"))) {
+                if (!(currentOrder.getStatus().equals("free")) && oldStatus.equals("free")) {
                     actionButton.setVisibility(View.INVISIBLE);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.toast_order_inaccessible), Toast.LENGTH_SHORT).show();
                 }
@@ -500,4 +501,5 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
         outState.putParcelable("order", currentOrder);
         super.onSaveInstanceState(outState);
     }
+    
 }
