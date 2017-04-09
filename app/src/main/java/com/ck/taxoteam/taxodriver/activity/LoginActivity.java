@@ -91,30 +91,28 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     private void login(){
-        dialog.show();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-
-        String email = emailEditText.getText().toString();
-        String pass = passwordEditText.getText().toString();
+        final String email = emailEditText.getText().toString();
+        final String pass = passwordEditText.getText().toString();
         if(!(email.equals("") || pass.equals(""))) {
-            auth.signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.
-                    getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            dialog.show();
+            new Thread(new Runnable() {
                 @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(!task.isSuccessful()){
-                        Toast.makeText(context,getString(R.string.login_failed_text),Toast.LENGTH_SHORT).show();
-                    }
+                public void run() {
+                    auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(context, getString(R.string.login_failed_text), Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        }
+                    });
                 }
-            });
+            }).start();
         }
         else{
-            Toast.makeText(context, getString(R.string.login_email_password_empty),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.login_email_password_empty), Toast.LENGTH_SHORT).show();
         }
-            }
-        }).start();
     }
 
     @Override

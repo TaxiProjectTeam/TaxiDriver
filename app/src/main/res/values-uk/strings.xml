@@ -9,7 +9,7 @@
     <string name="text_info_about_user">Інформація про користувача</string>
     <string name="text_about_program">Про програму</string>
     <string name="login_email_password_empty">Введіть пошту та пароль</string>
-    <string name="login_failed_text">Аунтитефікація невдала</string>
+    <string name="login_failed_text">Авторизація невдала</string>
     <string name="logout_text">Вийти</string>
     <string name="text_driver_info">Інформація водія</string>
     <string name="text_label_car_information">Інформація про автомобіль:</string>
@@ -22,7 +22,6 @@
     <string name="label_from_points">Список точок призначення:</string>
     <string name="button_text_accept">Прийняти</string>
     <string name="button_text_navigation">Навігація</string>
-    <string name="loading_text">Замовлення завантажуються</string>
     <string name="wait_loading_text">Будь ласка, зачекайте...</string>
     <string name="order_text">Замовлення</string>
     <string name="currency_uah">грн.</string>
@@ -49,4 +48,5 @@
     <string name="login_dialog_message">Авторизація</string>
     <string name="network_down_snackbar_text">Немає з\'єднання з інтернетом</string>
     <string name="action_open_wifi">Налаштування Wi-Fi</string>
+    <string name="toast_order_inaccessible">Замовлення було відмінене замовником, або прийняте іншим водієм</string>
 </resources>

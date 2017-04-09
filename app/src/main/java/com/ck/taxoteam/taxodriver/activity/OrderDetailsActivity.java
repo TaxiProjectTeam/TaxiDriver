@@ -54,12 +54,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.PolyUtil;
 import com.google.maps.android.ui.IconGenerator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -162,6 +164,23 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
             }
         });
         this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+
+        //Order change
+        firebaseDatabase.child("orders").child(currentOrder.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currentOrder = dataSnapshot.getValue(Order.class);
+                if (!(currentOrder.getStatus().equals("free"))) {
+                    actionButton.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.toast_order_inaccessible), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void showData(Order order) {

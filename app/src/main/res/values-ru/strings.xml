@@ -9,7 +9,7 @@
     <string name="text_info_about_user">Информация о пользователе</string>
     <string name="text_about_program">О програме</string>
     <string name="login_email_password_empty">Введите почту и пароль</string>
-    <string name="login_failed_text">Аунтетификация неуспешна</string>
+    <string name="login_failed_text">Авторизация неуспешна</string>
     <string name="logout_text">Выйти</string>
     <string name="text_driver_info">Информация водителя</string>
     <string name="text_label_car_information">Инормация о автомобиле:</string>
@@ -22,7 +22,6 @@
     <string name="label_from_points">Список точек назначения:</string>
     <string name="button_text_accept">Принять</string>
     <string name="button_text_navigation">Навигация</string>
-    <string name="loading_text">Заказы загружаются</string>
     <string name="wait_loading_text">Пожалуйста, подождите...</string>
     <string name="order_text">Заказ</string>
     <string name="currency_uah">грн.</string>
@@ -49,4 +48,5 @@
     <string name="login_dialog_message">Авторизация</string>
     <string name="network_down_snackbar_text">Нет соединения с интернетом</string>
     <string name="action_open_wifi">Настройки Wi-Fi</string>
+    <string name="toast_order_inaccessible">Заказ был отменено заказчиком, или принят другим водителем</string>
 </resources>

@@ -1,16 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
     android:id="@+id/details_activity_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <fragment
         android:id="@+id/map_order_detail"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -22,24 +22,24 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@color/md_grey_200"
-            android:padding="6dp"
-            android:orientation="vertical"
             android:clickable="true"
             android:elevation="10dp"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:padding="6dp">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <Button
-                style="@style/Base.Widget.AppCompat.Button.Colored"
                 android:id="@+id/details_button_action"
+                style="@style/Base.Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:textColor="@color/md_black_1000"
-                android:text="@string/button_text_accept" />
+                android:layout_centerVertical="true"
+                android:text="@string/button_text_accept"
+                android:textAppearance="?android:textAppearanceSmall" />
 
             <ImageView
                 android:id="@+id/details_price_icon"
@@ -52,29 +52,29 @@
                 android:id="@+id/textview_details_text_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                tools:text="300 грн."
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/details_price_icon" />
+                android:layout_toEndOf="@+id/details_price_icon"
+                android:textSize="20sp"
+                tools:text="300 грн." />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <ImageView
-                android:layout_width="30dp"
                 android:id="@+id/icon_from"
-                android:layout_centerVertical="true"
+                android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/fromicon"
-                android:layout_marginTop="10dp"/>
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/fromicon" />
             <TextView
                 android:id="@+id/textview_details_text_from"
                 android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_centerVertical="true"
                 android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
                 android:layout_toEndOf="@id/icon_from"
                 tools:text="бул. Шевченка, 350" />
             </RelativeLayout>
@@ -84,9 +84,9 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/toicon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:id="@+id/toicon"
                     android:src="@drawable/toicon"/>
 
             <android.support.v7.widget.RecyclerView
@@ -94,8 +94,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
                 android:layout_toEndOf="@+id/toicon" />
             </RelativeLayout>
 
@@ -103,19 +103,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/commenticon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
-                    android:id="@+id/commenticon"
                     android:src="@drawable/comment_icon"/>
             <TextView
                 android:id="@+id/textview_details_text_comment"
                 android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_toEndOf="@id/commenticon"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_toEndOf="@id/commenticon"
                 android:text="-" />
             </RelativeLayout>
         </LinearLayout>

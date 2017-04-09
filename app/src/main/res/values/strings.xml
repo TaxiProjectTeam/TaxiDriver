@@ -23,7 +23,6 @@
     <string name="label_from_points">List endpoints:</string>
     <string name="button_text_accept">Accept</string>
     <string name="button_text_navigation">navigation</string>
-    <string name="loading_text">Orders loaded</string>
     <string name="wait_loading_text">Please wait...</string>
     <string name="order_text">Order</string>
     <string name="currency_uah">UAH</string>
@@ -53,5 +52,6 @@
     <string name="login_dialog_message">Authorisation...</string>
     <string name="network_down_snackbar_text">No Internet connection</string>
     <string name="action_open_wifi">Wi-Fi settings</string>
+    <string name="toast_order_inaccessible">The order was canceled by the customer or taken another driver</string>
 
 </resources>
