@@ -170,8 +170,11 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String oldStatus = currentOrder.getStatus();
+                String oldID = currentOrder.getId();
+                boolean meAccept = currentOrder.isMeAccept();
                 currentOrder = dataSnapshot.getValue(Order.class);
-                if (!(currentOrder.getStatus().equals("free")) && oldStatus.equals("free")) {
+                currentOrder.setId(oldID);
+                if (!(currentOrder.getStatus().equals("free")) && oldStatus.equals("free") && !meAccept) {
                     actionButton.setVisibility(View.INVISIBLE);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.toast_order_inaccessible), Toast.LENGTH_SHORT).show();
                 }
@@ -418,6 +421,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OnMapRead
                             currentOrder.setDriverPos(new Coords(currCoords.longitude, currCoords.latitude));
                         }
 
+                        currentOrder.setMeAccept(true);
                         firebaseDatabase.child("orders").child(currentOrder.getId()).setValue(currentOrder);
                         serviceIntent.putExtra("order", currentOrder);
                         startService(serviceIntent);

@@ -31,7 +31,7 @@ public class Order implements Parcelable {
     private String price;
     private String driverId;
     private String status;
-
+    private boolean meAccept = false;
     private String fromAddress = "";
     private List<String> toAdress = new ArrayList<String>();
 
@@ -64,7 +64,7 @@ public class Order implements Parcelable {
         this.status = in.readString();
         this.time = in.readInt();
     }
-
+    @Exclude
     public String getId() {
         return id;
     }
@@ -155,6 +155,15 @@ public class Order implements Parcelable {
 
     public void setToAdress(List<String> toAdress) {
         this.toAdress = toAdress;
+    }
+
+    @Exclude
+    public boolean isMeAccept() {
+        return meAccept;
+    }
+
+    public void setMeAccept(boolean meAccept) {
+        this.meAccept = meAccept;
     }
 
     @Override
